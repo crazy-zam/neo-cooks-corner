@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1p&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.wrapper {
+  width: 100%;
+  height: 250px;
+
+  //   height: 18vw;
+  //   height: clamp(209px, 20%, 309px);
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  text-shadow: 3px 3px 12px black;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  //   height: 100px;
+  object-fit: cover;
+}
+.title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: white;
+  position: relative;
+  top: -90px;
+  left: 16px;
+  z-index: 1;
+}
+.author {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: white;
+  position: relative;
+  top: -85px;
+  left: 16px;
+  z-index: 1;
+}
+.btnGroup {
+  display: flex;
+  grid-gap: 6px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: white;
+  position: relative;
+  top: -80px;
+  left: 16px;
+  z-index: 1;
+}
+.activeIcon {
+  color: red;
+  filter: drop-shadow(3px 3px 6px black);
+}
+.icon {
+  color: white;
+  filter: drop-shadow(3px 3px 6px black);
+}

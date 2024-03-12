@@ -6,6 +6,9 @@ import LogoSmall from './logoSmall.svg';
 import HomeIcon from './home.svg';
 import SearchIcon from './search.svg';
 import ProfileIcon from './profile.svg';
+import ExitIcon from './exit.svg';
+import Heart from './heart.svg';
+import Bookmark from './bookmark.svg';
 export {
   eyeClosed,
   eyeOpened,
@@ -15,4 +18,7 @@ export {
   HomeIcon,
   SearchIcon,
   ProfileIcon,
+  ExitIcon,
+  Heart,
+  Bookmark,
 };
