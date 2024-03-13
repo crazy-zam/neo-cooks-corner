@@ -7,6 +7,7 @@ import { chefs } from '@/api/chefs';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import ModalContainer from '../ModalContainer/ModalContainer';
+import { Camera } from '@/assets';
 
 const MyProfile = () => {
   const chef = chefs[0];
@@ -25,8 +26,8 @@ const MyProfile = () => {
       tempFileURL: '',
     },
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      console.log(values.file);
+      // alert(JSON.stringify(values, null, 2));
+      console.log(values);
     },
   });
   return (
@@ -56,40 +57,66 @@ const MyProfile = () => {
       <ModalContainer modalIsOpen={modalIsOpen} closeModal={closeModal}>
         <div>Manage profile</div>
         <button>X</button>
-        <form onSubmit={formik.handleSubmit}>
-          <label htmlFor="fullName">First Name</label>
+        <form onSubmit={formik.handleSubmit} className={styles.form}>
+          <label className={styles.label} htmlFor="fullName">
+            Change your name
+          </label>
           <input
             id="fullName"
             name="fullName"
+            placeholder="Change your name"
             type="text"
+            className={styles.inputName}
             onChange={formik.handleChange}
             value={formik.values.fullName}
           />
-          <label htmlFor="bio">Last Name</label>
+          <label className={styles.label} htmlFor="bio">
+            Change your bio
+          </label>
           <input
             id="bio"
             name="bio"
+            placeholder="Change your bio"
             type="text"
+            className={styles.inputBio}
             onChange={formik.handleChange}
             value={formik.values.bio}
           />
-          <label htmlFor="file">file Address</label>
+          <label className={styles.label} htmlFor="file">
+            Add your photo
+          </label>
+          <label htmlFor="file" className={styles.inputPhoto}>
+            {formik.values.tempFileURL ? (
+              <>
+                <img
+                  className={styles.smallImg}
+                  src={formik.values.tempFileURL}
+                  alt="Change photo"
+                />
+              </>
+            ) : (
+              <>
+                <Camera /> <div>Upload a new photo</div>
+              </>
+            )}
+          </label>
           <input
             id="file"
             name="file"
             type="file"
+            className={styles.hiddenInput}
             onChange={(ev) => {
-              console.log(ev.target.files);
               formik.setFieldValue('file', ev.target.files[0]);
               formik.setFieldValue(
                 'tempFileURL',
-                URL.createObjectURL(ev.target.files[0]),
+                ev.target.files.length === 0
+                  ? ''
+                  : URL.createObjectURL(ev.target.files[0]),
               );
-              console.log(formik.values);
             }}
             // value={formik.values.file}
           />
-          <img src={formik.values.tempFileURL} alt="" />
+
           <button type="submit">Submit</button>
         </form>
       </ModalContainer>

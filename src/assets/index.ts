@@ -11,6 +11,7 @@ import Heart from './heart.svg';
 import Bookmark from './bookmark.svg';
 import ClockIcon from './clock.svg';
 import ChevronLeft from './chevronLeft.svg';
+import Camera from './Camera.svg';
 export {
   eyeClosed,
   eyeOpened,
@@ -25,4 +26,5 @@ export {
   Heart,
   Bookmark,
   ChevronLeft,
+  Camera,
 };
