@@ -12,7 +12,7 @@ interface ICard {
   isSaved: boolean;
 }
 const DishCard = ({
-  id: number,
+  id,
   title,
   author,
   image,
@@ -21,7 +21,6 @@ const DishCard = ({
   isLiked,
   isSaved,
 }: ICard) => {
-  console.log(isLiked, isSaved);
   return (
     <div className={styles.wrapper}>
       <img src={image} alt={title} className={styles.img} />

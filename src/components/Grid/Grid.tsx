@@ -1,5 +1,6 @@
 import styles from './grid.module.less';
 import DishCard from '../DishCard/DishCard';
+import { useRef } from 'react';
 interface ICard {
   id: number;
   title: string;
@@ -12,7 +13,6 @@ interface ICard {
 }
 
 const Grid = (array: any) => {
-  console.log(array);
   return (
     <div className={styles.gridWrapper}>
       {array.array.map((card: ICard) => {

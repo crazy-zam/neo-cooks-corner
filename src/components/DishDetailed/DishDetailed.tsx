@@ -1,7 +1,8 @@
 import styles from './dishDetailed.module.less';
 import { detailedDishes } from '@/api/detailed';
 import { ingredients } from '@/api/ingredients';
-import { Heart, Bookmark, ClockIcon, ChevronLeft } from '@/assets';
+import { Heart, Bookmark, ClockIcon } from '@/assets';
+import BactBtn from '@/UI/BackBtn/BackBtn';
 const DishDetailed = ({ id = 1 }) => {
   const dish = detailedDishes[id];
   const complexityObj = { 1: 'Easy', 2: 'Medium', 3: 'Hard' };
@@ -9,9 +10,7 @@ const DishDetailed = ({ id = 1 }) => {
   const complexity = dish.complexity as ObjectKey;
   return (
     <div className={styles.wrapper}>
-      <button className={styles.backBtn}>
-        <ChevronLeft />
-      </button>
+      <BactBtn />
       <img src={dish.image} alt="" className={styles.img} />
       <div className={styles.descriptionContainer}>
         <div className={styles.title}>{dish.title}</div>

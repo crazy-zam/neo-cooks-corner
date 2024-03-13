@@ -2,7 +2,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Main from './pages/Main/Main';
-
+import Modal from 'react-modal';
+Modal.setAppElement('#root');
 function App() {
   return (
     <div className="App">
