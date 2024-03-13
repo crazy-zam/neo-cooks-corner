@@ -1,4 +1,4 @@
-export const array = [
+export const dishes = [
   {
     id: 1,
     author: 'Dehlia Crother',

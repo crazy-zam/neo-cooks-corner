@@ -1,6 +1,6 @@
 import Grid from '../Grid/Grid';
 import styles from './mainComponent.module.less';
-import { array } from '@/api/dishes';
+import { dishes } from '@/api/dishes';
 const MainComponent = () => {
   return (
     <div className={styles.wrapper}>
@@ -12,7 +12,7 @@ const MainComponent = () => {
         <button className={styles.navigateBtn}>Dinner</button>
       </div>
       <div className={styles.grid}>
-        <Grid array={array}></Grid>
+        <Grid array={dishes}></Grid>
       </div>
     </div>
   );

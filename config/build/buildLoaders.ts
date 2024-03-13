@@ -1,4 +1,5 @@
 import { ModuleOptions } from 'webpack';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ReactRefreshTypeScript from 'react-refresh-typescript';
 import { BuildOptions } from './types/types';
 
@@ -31,14 +32,22 @@ export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
       },
     ],
   };
+  const cssLoaderWithModules = {
+    loader: 'css-loader',
+    options: {
+      modules: {
+        localIdentName: isDev ? '[path][name]__[local]' : '[hash:base64:8]',
+      },
+    },
+  };
 
   const lessLoader = {
     test: /\.less$/,
     use: [
-      { loader: 'style-loader' },
-      {
-        loader: 'css-loader',
-      },
+      isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+      // Translates CSS into CommonJS
+      cssLoaderWithModules,
+      ,
       { loader: 'less-loader' },
     ],
   };

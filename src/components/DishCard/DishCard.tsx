@@ -1,6 +1,5 @@
 import { Heart, Bookmark } from '@/assets';
 import styles from './dishCard.module.less';
-import { JSXElementConstructor, ReactElement } from 'react';
 
 interface ICard {
   id: number;

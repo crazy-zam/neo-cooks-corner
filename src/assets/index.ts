@@ -9,11 +9,14 @@ import ProfileIcon from './profile.svg';
 import ExitIcon from './exit.svg';
 import Heart from './heart.svg';
 import Bookmark from './bookmark.svg';
+import ClockIcon from './clock.svg';
+import ChevronLeft from './chevronLeft.svg';
 export {
   eyeClosed,
   eyeOpened,
   personImg,
   emailImg,
+  ClockIcon,
   LogoSmall,
   HomeIcon,
   SearchIcon,
@@ -21,4 +24,5 @@ export {
   ExitIcon,
   Heart,
   Bookmark,
+  ChevronLeft,
 };
