@@ -1,17 +1,19 @@
-import NavBar from '@/components/NavBar/NavBar';
+import Grid from '../../components/Grid/Grid';
 import styles from './main.module.less';
-import MainComponent from '@/components/MainComponent/MainComponent';
-import DishDetailed from '@/components/DishDetailed/DishDetailed';
-import ChefDetailed from '@/components/ChefDetailed/ChefDetailed';
-import MyProfile from '@/components/MyProfile/MyProfile';
+import { dishes } from '@/api/dishes';
 const Main = () => {
   return (
-    <div className={styles.page}>
-      <NavBar />
-      {/* <MainComponent /> */}
-      {/* <DishDetailed /> */}
-      {/* <ChefDetailed /> */}
-      <MyProfile />
+    <div className={styles.wrapper}>
+      <div className={styles.welcome}>Hi, Sarthak. UI Designer & Cook</div>
+      <div className={styles.title}>Category</div>
+      <div className={styles.navigateGroup}>
+        <button className={styles.navigateBtn}>Breakfast</button>
+        <button className={styles.navigateBtn}>Lunch</button>
+        <button className={styles.navigateBtn}>Dinner</button>
+      </div>
+      <div className={styles.grid}>
+        <Grid array={dishes}></Grid>
+      </div>
     </div>
   );
 };

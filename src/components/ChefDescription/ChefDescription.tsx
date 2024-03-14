@@ -1,11 +1,11 @@
 import styles from './chefDescription.module.less';
+import { ReactNode } from 'react';
 interface IChef {
   author: string;
   recipes: number;
   followers: number;
   following: number;
   bio: string;
-  isFollow?: boolean;
   myProfile: boolean;
 }
 const ChefDescription = ({
@@ -13,7 +13,6 @@ const ChefDescription = ({
   recipes,
   followers,
   following,
-  isFollow,
   bio,
   myProfile,
 }: IChef) => {
@@ -34,16 +33,15 @@ const ChefDescription = ({
           Following
         </div>
       </div>
-      <div>{bio}</div>{' '}
-      {myProfile ? (
-        <button className={styles.buttonProfile} disabled={isFollow}>
-          Manage Profile
-        </button>
+      {myProfile && <div className={styles.author}>{author}</div>}
+      <div>{bio}</div>
+      {/* {myProfile ? (
+
       ) : (
         <button className={styles.buttonFollow} disabled={isFollow}>
           Follow
         </button>
-      )}
+      )} */}
     </div>
   );
 };

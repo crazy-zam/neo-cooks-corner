@@ -1,9 +1,9 @@
 import styles from './chefDetailed.module.less';
 import { chefs } from '@/api/chefs';
 import BackBtn from '@/UI/BackBtn/BackBtn';
-import Grid from '../Grid/Grid';
+import Grid from '../../components/Grid/Grid';
 import { dishes } from '@/api/dishes';
-import ChefDescription from '../ChefDescription/ChefDescription';
+import ChefDescription from '../../components/ChefDescription/ChefDescription';
 const ChefDetailed = ({ id = 0 }) => {
   const chef = chefs[id];
 
@@ -17,7 +17,6 @@ const ChefDetailed = ({ id = 0 }) => {
         recipes={chef.recipes}
         following={chef.following}
         bio={chef.bio}
-        isFollow={chef.isFollow}
         myProfile={false}
       />
       <div className={styles.grid}>

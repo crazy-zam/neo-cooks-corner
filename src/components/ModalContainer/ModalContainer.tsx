@@ -4,10 +4,16 @@ import { ReactNode } from 'react';
 interface IModal {
   modalIsOpen: boolean;
   closeModal: () => void;
+  title: string;
   children?: ReactNode;
 }
 
-const ModalContainer = ({ modalIsOpen, closeModal, children }: IModal) => {
+const ModalContainer = ({
+  modalIsOpen,
+  closeModal,
+  children,
+  title,
+}: IModal) => {
   return (
     <>
       <Modal
@@ -16,6 +22,7 @@ const ModalContainer = ({ modalIsOpen, closeModal, children }: IModal) => {
         className={styles.modal}
         overlayClassName={styles.overlay}
       >
+        <div className={styles.titleModal}>{title}</div>
         {children}
       </Modal>
     </>

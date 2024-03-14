@@ -12,6 +12,10 @@ import Bookmark from './bookmark.svg';
 import ClockIcon from './clock.svg';
 import ChevronLeft from './chevronLeft.svg';
 import Camera from './Camera.svg';
+import CloseModal from './closeModal.svg';
+import Loupe from './loupe.svg';
+import SearchClear from './clearSearch.svg';
+import AddBtn from './addBtn.svg';
 export {
   eyeClosed,
   eyeOpened,
@@ -27,4 +31,8 @@ export {
   Bookmark,
   ChevronLeft,
   Camera,
+  CloseModal,
+  Loupe,
+  SearchClear,
+  AddBtn,
 };
