@@ -8,8 +8,11 @@ import {
   ExitIcon,
 } from '@/assets';
 import styles from './navBar.module.less';
-const NavBar = () => {
-  const [activeTab, setActiveTab] = useState('home');
+import userStore from '@/store/userStore';
+import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import appStore from '@/store/appStore';
+const NavBar = observer(() => {
   const [modalIsOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);
@@ -17,24 +20,37 @@ const NavBar = () => {
   function closeModal() {
     setIsOpen(false);
   }
+  const setStyle = (page: 'main' | 'search' | 'profile') =>
+    appStore.page === page ? styles.activeTab : styles.tab;
   return (
     <div className={styles.wrapper}>
       <div className={styles.btnBlock}>
         <div className={styles.logo}>
           <LogoSmall className={styles.logoImg} />
-
           <div className={styles.logoTxt}>CooksCorner</div>
         </div>
         <div className={styles.line}></div>
-        <button className={styles.activeTab}>
+        <Link
+          to="/main"
+          className={setStyle('main')}
+          onClick={() => appStore.setPage('main')}
+        >
           <HomeIcon className={styles.icon} />
-        </button>
-        <button className={styles.tab}>
+        </Link>
+        <Link
+          to="/search"
+          className={setStyle('search')}
+          onClick={() => appStore.setPage('search')}
+        >
           <SearchIcon className={styles.icon} />
-        </button>
-        <button className={styles.tab}>
+        </Link>
+        <Link
+          to="/my-profile"
+          className={setStyle('profile')}
+          onClick={() => appStore.setPage('profile')}
+        >
           <ProfileIcon className={styles.icon} />
-        </button>
+        </Link>
       </div>
       <button className={styles.exitTab} onClick={openModal}>
         <ExitIcon className={styles.icon} />
@@ -45,7 +61,9 @@ const NavBar = () => {
         title="Are you sure you wanna leave?"
       >
         <div>
-          <button className={styles.btnExitYes}>Yes</button>
+          <button className={styles.btnExitYes} onClick={userStore.logout}>
+            Yes
+          </button>
           <button className={styles.btnExitNo} onClick={closeModal}>
             No
           </button>
@@ -53,6 +71,6 @@ const NavBar = () => {
       </ModalContainer>
     </div>
   );
-};
+});
 
 export default NavBar;

@@ -2,8 +2,19 @@ import { useFormik } from 'formik';
 import styles from './formRegister.module.less';
 import { eyeClosed, eyeOpened } from '@/assets';
 import { useEffect, useState } from 'react';
+import {
+  usernameSchema,
+  emailSchema,
+  passwordSchema,
+  confirmPasswordSchema,
+} from '@/utils/validation/schemes';
+import { errorNotify } from '@/utils/toaster';
 
 const FormRegister = () => {
+  const schema = usernameSchema
+    .concat(emailSchema)
+    .concat(passwordSchema)
+    .concat(confirmPasswordSchema);
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -13,9 +24,28 @@ const FormRegister = () => {
     },
 
     onSubmit: ({ name, email, password, confirmPassword }) => {
-      console.log(email, password);
+      schema
+        .validate(
+          {
+            name: formik.values.name,
+            email: formik.values.email,
+            password: formik.values.password,
+            confirmPassword: formik.values.confirmPassword,
+          },
+          { abortEarly: false },
+        )
+        .then(() => {
+          console.log(name, email, password, confirmPassword);
+        })
+        .catch((e) => {
+          const errors = new Set(e.errors);
+          errors.forEach((err: string) => {
+            errorNotify(err);
+          });
+        });
     },
   });
+
   const [togglePassword, setTogglePassword] = useState(false);
   const [toggleConfirmPassword, setToggleConfirmPassword] = useState(false);
   const togglePasswordHandler = () => {
@@ -26,8 +56,14 @@ const FormRegister = () => {
   };
   const [btnDisabled, setBtnDisabled] = useState(true);
   useEffect(() => {
-    setBtnDisabled(!formik.values.email || !formik.values.password);
+    setBtnDisabled(
+      !formik.values.email ||
+        !formik.values.password ||
+        !formik.values.name ||
+        !formik.values.confirmPassword,
+    );
   }, [formik.values]);
+
   return (
     <div className={styles.wrapper}>
       <form onSubmit={formik.handleSubmit} className={styles.formWrapper}>

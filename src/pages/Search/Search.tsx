@@ -5,9 +5,10 @@ import styles from './search.module.less';
 import { AddBtn, CloseModal, Loupe, SearchClear } from '@/assets';
 import ModalContainer from '@/components/ModalContainer/ModalContainer';
 import FormAddRecipe from '@/components/FormAddRecipe/FormAddRecipe';
-const Search = () => {
-  const [results, setResults] = useState([1]);
-  const [search, setSearch] = useState('s');
+import { observer } from 'mobx-react-lite';
+import searchStore from '@/store/searchStore';
+const Search = observer(() => {
+  const [search, setSearch] = useState('');
   const [modalIsOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);
@@ -15,31 +16,62 @@ const Search = () => {
   function closeModal() {
     setIsOpen(false);
   }
+  const addBtn = (category: 'chefs' | 'recipes') => {
+    return (
+      <button
+        className={
+          searchStore.category === category
+            ? styles.activeToggle
+            : styles.passiveToggle
+        }
+        onClick={() => {
+          setSearch('');
+          searchStore.setCategory(category);
+        }}
+      >
+        {category.charAt(0).toUpperCase() + category.slice(1)}
+      </button>
+    );
+  };
   return (
     <div className={styles.wrapper}>
       <div>What to eat today?</div>
       <div className={styles.toggle}>
-        <button className={styles.passiveToggle}>Chefs</button>
-        <button className={styles.activeToggle}>Recipes</button>
+        {addBtn('chefs')}
+        {addBtn('recipes')}
       </div>
       <div className={styles.searchWrapper}>
         <input
           placeholder="Search recipes"
           className={search !== '' ? styles.searchFilled : styles.searchEmpty}
           type="text"
+          value={search}
+          onChange={(ev) => {
+            setSearch(ev.target.value);
+          }}
         ></input>
         {search !== '' ? (
-          <Loupe className={styles.searchInner} />
+          <Loupe
+            className={styles.searchInner}
+            onClick={() => {
+              searchStore.getResults(search);
+            }}
+          />
         ) : (
-          <SearchClear className={styles.searchInner} />
+          <SearchClear
+            className={styles.searchInner}
+            onClick={() => {
+              setSearch('');
+            }}
+          />
         )}
       </div>
       <div className={styles.gridWrapper}>
         <div>Search results</div>
-        {results.length === 0 ? (
-          <div>No results found</div>
+        {searchStore.isLoading ? (
+          <div>Loading..</div>
         ) : (
-          <Grid array={dishes} />
+          <Grid array={searchStore.results} type={searchStore.category} />
         )}
       </div>
       <button className={styles.addBtn} onClick={openModal}>
@@ -58,6 +90,6 @@ const Search = () => {
       </ModalContainer>
     </div>
   );
-};
+});
 
 export default Search;

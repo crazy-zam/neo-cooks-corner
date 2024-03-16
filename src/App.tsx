@@ -2,21 +2,20 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import styles from './app.module.less';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
-
 import Modal from 'react-modal';
 import NavBar from './components/NavBar/NavBar';
-import { useState } from 'react';
 import Main from './pages/Main/Main';
 import ChefDetailed from './pages/ChefDetailed/ChefDetailed';
 import MyProfile from './pages/MyProfile/MyProfile';
 import Search from './pages/Search/Search';
+import { observer } from 'mobx-react-lite';
+import userStore from './store/userStore';
+import DishDetailed from './pages/DishDetailed/DishDetailed';
 Modal.setAppElement('#root');
-function App() {
-  const navigate = useNavigate();
-  const [isAuth, setIsAuth] = useState(true);
+const App = observer(() => {
   return (
     <div className={styles.app}>
-      {isAuth ? (
+      {userStore.isAuth ? (
         <>
           <NavBar />
           <div></div>
@@ -25,6 +24,7 @@ function App() {
             <Route path="/chef-details/:id" element={<ChefDetailed />} />
             <Route path="/my-profile" element={<MyProfile />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/recipe/:id" element={<DishDetailed />} />
             <Route path="*" element={<Navigate to="/main" />} />
           </Routes>
         </>
@@ -37,6 +37,6 @@ function App() {
       )}
     </div>
   );
-}
+});
 
 export default App;

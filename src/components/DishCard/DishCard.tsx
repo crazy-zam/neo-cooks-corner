@@ -1,7 +1,8 @@
 import { Heart, Bookmark } from '@/assets';
 import styles from './dishCard.module.less';
+import { Link } from 'react-router-dom';
 
-interface ICard {
+interface IRecipeCard {
   id: number;
   title: string;
   author: string;
@@ -20,9 +21,9 @@ const DishCard = ({
   saves,
   isLiked,
   isSaved,
-}: ICard) => {
+}: IRecipeCard) => {
   return (
-    <div className={styles.wrapper}>
+    <Link to={`/recipe/${id}`} className={styles.wrapper}>
       <img src={image} alt={title} className={styles.img} />
       <div className={styles.title}>{title}</div>
       <div className={styles.author}>by {author}</div>
@@ -32,7 +33,7 @@ const DishCard = ({
         <Bookmark className={isSaved ? styles.activeIcon : styles.icon} />
         {saves}
       </div>
-    </div>
+    </Link>
   );
 };
 

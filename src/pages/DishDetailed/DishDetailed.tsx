@@ -3,10 +3,14 @@ import { detailedDishes } from '@/api/detailed';
 import { ingredients } from '@/api/ingredients';
 import { Heart, Bookmark, ClockIcon } from '@/assets';
 import BactBtn from '@/UI/BackBtn/BackBtn';
-const DishDetailed = ({ id = 1 }) => {
-  const dish = detailedDishes[id];
+import { Link, useParams } from 'react-router-dom';
+const DishDetailed = () => {
+  let { id } = useParams();
+  const idNumber = parseInt(id);
+  const dish = detailedDishes[idNumber];
   const complexityObj = { 1: 'Easy', 2: 'Medium', 3: 'Hard' };
   type ObjectKey = keyof typeof complexityObj;
+
   const complexity = dish.complexity as ObjectKey;
   return (
     <div className={styles.wrapper}>
@@ -14,7 +18,9 @@ const DishDetailed = ({ id = 1 }) => {
       <img src={dish.image} alt="" className={styles.img} />
       <div className={styles.descriptionContainer}>
         <div className={styles.title}>{dish.title}</div>
-        <div className={styles.author}>by {dish.author}</div>
+        <Link to={`/chef-details/${dish.id}`} className={styles.author}>
+          by {dish.author}
+        </Link>
         <div className={styles.time}>
           <ClockIcon className={styles.clock} />
           {dish.time} min

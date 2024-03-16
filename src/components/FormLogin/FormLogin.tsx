@@ -2,7 +2,14 @@ import { useFormik } from 'formik';
 import styles from './formLogin.module.less';
 import { eyeClosed, eyeOpened } from '@/assets';
 import { useEffect, useState } from 'react';
+import { userLoginAPI } from '@/api/userApi';
+import { emailSchema, passwordSchema } from '@/utils/validation/schemes';
+import { errorNotify } from '@/utils/toaster';
+import { useNavigate } from 'react-router-dom';
+import userStore from '@/store/userStore';
 const FormLogin = () => {
+  const navigate = useNavigate();
+  const schema = emailSchema.concat(passwordSchema);
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -10,7 +17,30 @@ const FormLogin = () => {
     },
 
     onSubmit: ({ email, password }) => {
-      console.log(email, password);
+      schema
+        .validate(
+          {
+            email: formik.values.email,
+            password: formik.values.password,
+          },
+          { abortEarly: false },
+        )
+        .then(async () => {
+          console.log(email, password);
+
+          try {
+            await userStore.login(email, password);
+            navigate('/main');
+          } catch (error) {
+            errorNotify(error);
+          }
+        })
+        .catch((e) => {
+          const errors = new Set(e.errors);
+          errors.forEach((err: string) => {
+            errorNotify(err);
+          });
+        });
     },
   });
   const [togglePassword, setTogglePassword] = useState(false);

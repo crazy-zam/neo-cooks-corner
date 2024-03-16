@@ -14,7 +14,7 @@ const Register = () => {
       <FormRegister></FormRegister>
       <div className={styles.footer}>
         Already have an account?{' '}
-        <Link to="" className={styles.link}>
+        <Link to="/auth/login" className={styles.link}>
           Sign In Now
         </Link>
       </div>
