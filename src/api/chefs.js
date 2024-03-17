@@ -2,7 +2,7 @@ export const chefs = [
   {
     id: 1,
     author: 'Dina Burgyn',
-    photo:
+    image:
       'https://robohash.org/quaeratbeataevoluptas.png?size=160x160&set=set1',
     recipes: 4,
     followers: 83,
@@ -13,7 +13,7 @@ export const chefs = [
   {
     id: 2,
     author: 'Fidelio Oven',
-    photo: 'https://robohash.org/illoquoquia.png?size=160x160&set=set1',
+    image: 'https://robohash.org/illoquoquia.png?size=160x160&set=set1',
     recipes: 34,
     followers: 112,
     following: 39,
@@ -23,7 +23,7 @@ export const chefs = [
   {
     id: 3,
     author: 'Tabby Champniss',
-    photo: 'https://robohash.org/autvoluptasnon.png?size=160x160&set=set1',
+    image: 'https://robohash.org/autvoluptasnon.png?size=160x160&set=set1',
     recipes: 37,
     followers: 143,
     following: 120,
@@ -33,7 +33,7 @@ export const chefs = [
   {
     id: 4,
     author: 'Dunstan Arman',
-    photo: 'https://robohash.org/veroanimiet.png?size=160x160&set=set1',
+    image: 'https://robohash.org/veroanimiet.png?size=160x160&set=set1',
     recipes: 10,
     followers: 24,
     following: 52,
@@ -43,7 +43,7 @@ export const chefs = [
   {
     id: 5,
     author: 'Claudell De La Haye',
-    photo: 'https://robohash.org/totamrerummagni.png?size=160x160&set=set1',
+    image: 'https://robohash.org/totamrerummagni.png?size=160x160&set=set1',
     recipes: 16,
     followers: 34,
     following: 130,
@@ -53,7 +53,7 @@ export const chefs = [
   {
     id: 6,
     author: 'Roz Galtone',
-    photo: 'https://robohash.org/minusodioratione.png?size=160x160&set=set1',
+    image: 'https://robohash.org/minusodioratione.png?size=160x160&set=set1',
     recipes: 9,
     followers: 95,
     following: 124,
@@ -63,7 +63,7 @@ export const chefs = [
   {
     id: 7,
     author: 'Olympe Ruegg',
-    photo:
+    image:
       'https://robohash.org/magnamarchitectoexplicabo.png?size=160x160&set=set1',
     recipes: 20,
     followers: 50,
@@ -74,7 +74,7 @@ export const chefs = [
   {
     id: 8,
     author: 'Annabal Eriksson',
-    photo: 'https://robohash.org/utvelitlaborum.png?size=160x160&set=set1',
+    image: 'https://robohash.org/utvelitlaborum.png?size=160x160&set=set1',
     recipes: 21,
     followers: 111,
     following: 16,
@@ -84,7 +84,7 @@ export const chefs = [
   {
     id: 9,
     author: 'Philbert Cino',
-    photo:
+    image:
       'https://robohash.org/molestiasvoluptasest.png?size=160x160&set=set1',
     recipes: 38,
     followers: 143,
@@ -95,7 +95,7 @@ export const chefs = [
   {
     id: 10,
     author: 'Alejoa Paskin',
-    photo:
+    image:
       'https://robohash.org/esseassumendatempora.png?size=160x160&set=set1',
     recipes: 15,
     followers: 56,
@@ -106,7 +106,7 @@ export const chefs = [
   {
     id: 11,
     author: 'Hadlee Bartolomivis',
-    photo:
+    image:
       'https://robohash.org/etconsequaturdoloremque.png?size=160x160&set=set1',
     recipes: 5,
     followers: 73,
@@ -117,7 +117,7 @@ export const chefs = [
   {
     id: 12,
     author: 'Aime Tommasetti',
-    photo:
+    image:
       'https://robohash.org/fugaassumendaconsequatur.png?size=160x160&set=set1',
     recipes: 38,
     followers: 121,

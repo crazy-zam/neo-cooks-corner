@@ -40,14 +40,16 @@ export const getRecipesById = async (
   id: number,
 ) => {
   try {
-    const response = await instance.get(`/v1/recipes/by-chef/:${id}`, {
-      headers: { Authorization: 'Bearer ' + accessToken },
-      params: {
-        page: page,
-        limit: limit,
-      },
-    });
-    const recipesArr: Array<IRecipeSmall> = response.data;
+    // const response = await instance.get(`/v1/recipes/by-chef/:${id}`, {
+    //   headers: { Authorization: 'Bearer ' + accessToken },
+    //   params: {
+    //     page: page,
+    //     limit: limit,
+    //   },
+    // });
+    // const recipesArr: Array<IRecipeSmall> = response.data;
+    await sleep(1000);
+    const recipesArr: Array<IRecipeSmall> = dishes;
     return recipesArr;
   } catch (error) {
     throw error.response.data;
@@ -60,14 +62,16 @@ export const getSavedRecipes = async (
   limit: number,
 ) => {
   try {
-    const response = await instance.get('/v1/saved-recipes', {
-      headers: { Authorization: 'Bearer ' + accessToken },
-      params: {
-        page: page,
-        limit: limit,
-      },
-    });
-    const recipesArr: Array<IRecipeSmall> = response.data;
+    // const response = await instance.get('/v1/saved-recipes', {
+    //   headers: { Authorization: 'Bearer ' + accessToken },
+    //   params: {
+    //     page: page,
+    //     limit: limit,
+    //   },
+    // });
+    // const recipesArr: Array<IRecipeSmall> = response.data;
+    await sleep(1000);
+    const recipesArr: Array<IRecipeSmall> = dishes;
     return recipesArr;
   } catch (error) {
     throw error.response.data;

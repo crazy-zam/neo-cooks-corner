@@ -16,9 +16,10 @@ class userStore {
   followers: number;
   follow: number;
   recipesArr: Array<IRecipeSmall>;
+  totalRecipes: number;
   page: number = 1;
   limit: number = 12;
-  recipesArrCategory: 'my' | 'saved';
+  recipesArrCategory: 'my' | 'saved' = 'my';
   constructor() {
     makeAutoObservable(this);
   }
@@ -63,14 +64,20 @@ class userStore {
     this.follow = 0;
   };
   getRecipesAction = async () => {
+    this.isLoading = true;
     const response =
       this.recipesArrCategory === 'my'
         ? await getRecipesById(this.accessToken, this.page, this.limit, this.id)
         : await getSavedRecipes(this.accessToken, this.page, this.limit);
     this.recipesArr = response;
+    this.isLoading = false;
   };
   setPage = (page: number) => {
     this.page = page;
+    this.getRecipesAction();
+  };
+  setCategory = (category: 'my' | 'saved') => {
+    this.recipesArrCategory = category;
     this.getRecipesAction();
   };
 }

@@ -8,6 +8,8 @@ class searchStore {
   isLoading = false;
   category: 'chefs' | 'recipes' = 'chefs';
   results: Array<IRecipeSmall> | Array<IChef> = [];
+  searchString: string;
+  totalRecipes: number;
   page = 1;
   limit = 12;
   constructor() {
@@ -18,8 +20,13 @@ class searchStore {
     this.page = 1;
     this.results = [];
   };
+  setPage = (page: number) => {
+    this.page = page;
+    this.getResults(this.searchString);
+  };
   getResults = async (search: string) => {
     this.isLoading = true;
+    this.searchString = search;
     const results =
       this.category === 'recipes'
         ? await searchRecipes(

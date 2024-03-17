@@ -16,6 +16,11 @@ import CloseModal from './closeModal.svg';
 import Loupe from './loupe.svg';
 import SearchClear from './clearSearch.svg';
 import AddBtn from './addBtn.svg';
+
+import ArrowLeft from './leftArrow.svg';
+import ArrowLeftDouble from './leftDoubleArrow.svg';
+import ArrowRight from './rightArrow.svg';
+import ArrowRightDouble from './rightDoubleArrow.svg';
 export {
   eyeClosed,
   eyeOpened,
@@ -35,4 +40,8 @@ export {
   Loupe,
   SearchClear,
   AddBtn,
+  ArrowLeft,
+  ArrowLeftDouble,
+  ArrowRight,
+  ArrowRightDouble,
 };

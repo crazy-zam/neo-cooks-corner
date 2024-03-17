@@ -7,8 +7,9 @@ class mainStore {
   isLoading: boolean = false;
   category: 'breakfast' | 'lunch' | 'dinner' = 'breakfast';
   recipes: Array<IRecipeSmall> = [];
-  page: number = 1;
-  limit: number = 12;
+  totalRecipes = 36;
+  page = 1;
+  limit = 6;
   detailed: number;
 
   constructor() {
@@ -16,7 +17,7 @@ class mainStore {
   }
   setCategory = (category: 'breakfast' | 'lunch' | 'dinner') => {
     this.category = category;
-    console.log('setCategory', category);
+
     this.getRecipesAction();
   };
   setPage = (page: number) => {
@@ -37,8 +38,6 @@ class mainStore {
         this.limit,
       );
       this.recipes = response;
-      console.log('response', response);
-      console.log('inStore', this.recipes);
     } catch (error) {
       console.log(error);
     } finally {

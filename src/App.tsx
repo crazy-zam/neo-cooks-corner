@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import styles from './app.module.less';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
@@ -11,6 +11,7 @@ import Search from './pages/Search/Search';
 import { observer } from 'mobx-react-lite';
 import userStore from './store/userStore';
 import DishDetailed from './pages/DishDetailed/DishDetailed';
+import { Scrollbar } from 'react-scrollbars-custom';
 Modal.setAppElement('#root');
 const App = observer(() => {
   return (
@@ -19,14 +20,43 @@ const App = observer(() => {
         <>
           <NavBar />
           <div></div>
-          <Routes>
-            <Route path="/main" element={<Main />} />
-            <Route path="/chef-details/:id" element={<ChefDetailed />} />
-            <Route path="/my-profile" element={<MyProfile />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/recipe/:id" element={<DishDetailed />} />
-            <Route path="*" element={<Navigate to="/main" />} />
-          </Routes>
+          <Scrollbar
+            disableTracksWidthCompensation
+            style={{ width: `100%`, height: '100vh' }}
+            thumbYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return (
+                  <div
+                    {...restProps}
+                    ref={elementRef}
+                    className={styles.tHuMbY}
+                  />
+                );
+              },
+            }}
+            trackYProps={{
+              renderer: (props) => {
+                const { elementRef, ...restProps } = props;
+                return (
+                  <span
+                    {...restProps}
+                    ref={elementRef}
+                    className={styles.trackY}
+                  />
+                );
+              },
+            }}
+          >
+            <Routes>
+              <Route path="/main" element={<Main />} />
+              <Route path="/chef-details/:id" element={<ChefDetailed />} />
+              <Route path="/my-profile" element={<MyProfile />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/recipe/:id" element={<DishDetailed />} />
+              <Route path="*" element={<Navigate to="/main" />} />
+            </Routes>
+          </Scrollbar>
         </>
       ) : (
         <Routes>

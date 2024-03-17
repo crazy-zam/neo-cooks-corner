@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import Grid from '../../components/Grid/Grid';
-import { dishes } from '../../api/dishes';
+
 import styles from './search.module.less';
-import { AddBtn, CloseModal, Loupe, SearchClear } from '@/assets';
+import { AddBtn, Loupe, SearchClear } from '@/assets';
 import ModalContainer from '@/components/ModalContainer/ModalContainer';
 import FormAddRecipe from '@/components/FormAddRecipe/FormAddRecipe';
 import { observer } from 'mobx-react-lite';
 import searchStore from '@/store/searchStore';
+import Loader from '@/UI/Loader/Loader';
+import LoaderSmall from '@/UI/LoaderSmall/LoaderSmall';
+import PageBtnGroup from '@/UI/PageBtnGroup/PageBtnGroup';
 const Search = observer(() => {
   const [search, setSearch] = useState('');
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -69,23 +72,26 @@ const Search = observer(() => {
       <div className={styles.gridWrapper}>
         <div>Search results</div>
         {searchStore.isLoading ? (
-          <div>Loading..</div>
+          <Loader />
         ) : (
-          <Grid array={searchStore.results} type={searchStore.category} />
+          <>
+            <Grid array={searchStore.results} type={searchStore.category} />{' '}
+            <PageBtnGroup store={searchStore} />
+          </>
         )}
       </div>
+
       <button className={styles.addBtn} onClick={openModal}>
         <AddBtn className={styles.addBtnIcon} />
         Add your recipe
+        {/* <LoaderSmall /> */}
       </button>
       <ModalContainer
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}
         title="Create recipe"
+        closeModalBtn={true}
       >
-        <button className={styles.buttonCloseModal} onClick={closeModal}>
-          <CloseModal />
-        </button>
         <FormAddRecipe />
       </ModalContainer>
     </div>

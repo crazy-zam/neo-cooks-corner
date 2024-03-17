@@ -10,7 +10,7 @@ const ChefDetailed = ({ id = 0 }) => {
   return (
     <div className={styles.wrapper}>
       <BackBtn />
-      <img className={styles.avatar} src={chef.photo} alt="avatar" />
+      <img className={styles.avatar} src={chef.image} alt="avatar" />
       <ChefDescription
         author={chef.author}
         followers={chef.followers}

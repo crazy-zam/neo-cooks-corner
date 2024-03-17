@@ -9,7 +9,7 @@ interface IChefCard {
 }
 const ChefCard = ({ id, fullName, image }: IChefCard) => {
   return (
-    <Link to={`/recipe/${id}`} className={styles.wrapper}>
+    <Link to={`/chef-details/${id}`} className={styles.wrapper}>
       <img src={image} alt={fullName} className={styles.img} />
       <div className={styles.title}>{fullName}</div>
     </Link>

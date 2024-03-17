@@ -59,6 +59,7 @@ const NavBar = observer(() => {
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}
         title="Are you sure you wanna leave?"
+        closeModalBtn={false}
       >
         <div>
           <button className={styles.btnExitYes} onClick={userStore.logout}>

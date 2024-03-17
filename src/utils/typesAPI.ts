@@ -15,7 +15,7 @@ export interface ITokens {
 export interface IChef {
   id: number;
   author: string;
-  photo: string;
+  image: string;
 }
 
 export interface IRecipe {

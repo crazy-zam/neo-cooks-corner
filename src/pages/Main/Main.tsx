@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
 import Grid from '../../components/Grid/Grid';
 import styles from './main.module.less';
-import { dishes } from '@/api/dishes';
 import userStore from '@/store/userStore';
 import { observer } from 'mobx-react-lite';
 import mainStore from '@/store/mainStore';
-import { ITodo } from '@/utils/typesAPI';
+
+import Loader from '@/UI/Loader/Loader';
+import PageBtnGroup from '@/UI/PageBtnGroup/PageBtnGroup';
 
 const Main = observer(() => {
   useEffect(() => {
     mainStore.getRecipesAction();
-    console.log('main', mainStore.recipes);
   }, []);
 
   const addBtn = (category: 'breakfast' | 'lunch' | 'dinner') => {
@@ -47,9 +47,12 @@ const Main = observer(() => {
       </div>
       <div className={styles.grid}>
         {mainStore.isLoading ? (
-          <div className={styles.welcome}>Loading...</div>
+          <Loader />
         ) : (
-          <Grid array={mainStore.recipes}></Grid>
+          <>
+            <Grid array={mainStore.recipes}></Grid>
+            <PageBtnGroup store={mainStore} />
+          </>
         )}
       </div>
     </div>

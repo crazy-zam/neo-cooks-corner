@@ -2,6 +2,10 @@ import { useFormik } from 'formik';
 import styles from './formAddRecipe.module.less';
 import { Camera } from '@/assets';
 import InputIngredient from '@/UI/InputIngredient/InputIngredient';
+import { useEffect, useState } from 'react';
+import Loader from '@/UI/Loader/Loader';
+import { object } from 'yup';
+import LoaderSmall from '@/UI/LoaderSmall/LoaderSmall';
 
 const FormAddRecipe = () => {
   const ingredientObj = {
@@ -24,6 +28,34 @@ const FormAddRecipe = () => {
       console.log(values);
     },
   });
+  const [btnDisabled, setBtnDisabled] = useState(true);
+  useEffect(() => {
+    setBtnDisabled(
+      Object.values(formik.values).reduce((acc, field) => {
+        if (typeof field === 'object') {
+          return acc || field[0]?.ingredient === '' || field[0]?.amount === '';
+        }
+        return acc || field === '';
+      }, false),
+    );
+  }, [formik.values]);
+  const difficultyBtn = (difficulty: string) => {
+    return (
+      <button
+        type="button"
+        className={
+          formik.values.difficulty === difficulty
+            ? styles.difficultBtnActive
+            : styles.difficultBtn
+        }
+        onClick={() => {
+          formik.setFieldValue('difficulty', difficulty);
+        }}
+      >
+        {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+      </button>
+    );
+  };
   return (
     <form onSubmit={formik.handleSubmit} className={styles.form}>
       <div className={styles.grid}>
@@ -91,45 +123,9 @@ const FormAddRecipe = () => {
             Difficulty
           </label>
           <div className={styles.difficultBtnGroup}>
-            <button
-              type="button"
-              className={
-                formik.values.difficulty === 'easy'
-                  ? styles.difficultBtnActive
-                  : styles.difficultBtn
-              }
-              onClick={() => {
-                formik.setFieldValue('difficulty', 'easy');
-              }}
-            >
-              Easy
-            </button>
-            <button
-              type="button"
-              className={
-                formik.values.difficulty === 'medium'
-                  ? styles.difficultBtnActive
-                  : styles.difficultBtn
-              }
-              onClick={() => {
-                formik.setFieldValue('difficulty', 'medium');
-              }}
-            >
-              Medium
-            </button>
-            <button
-              type="button"
-              className={
-                formik.values.difficulty === 'hard'
-                  ? styles.difficultBtnActive
-                  : styles.difficultBtn
-              }
-              onClick={() => {
-                formik.setFieldValue('difficulty', 'hard');
-              }}
-            >
-              Hard
-            </button>
+            {difficultyBtn('easy')}
+            {difficultyBtn('medium')}
+            {difficultyBtn('hard')}
           </div>
         </div>
         <div className={styles.categoryContainer}>
@@ -149,11 +145,10 @@ const FormAddRecipe = () => {
           <input
             id="time"
             name="time"
-            placeholder="How much time does it need?(minutes)"
+            placeholder="How much time?(min)"
             type="text"
             className={styles.inputGrey}
             onKeyDown={(event) => {
-              // Only allow if the e.key value is a number or if it's 'Backspace'
               if (isNaN(+event.key) && event.key !== 'Backspace') {
                 event.preventDefault();
               }
@@ -199,7 +194,12 @@ const FormAddRecipe = () => {
         );
       })}
 
-      <button type="submit" className={styles.buttonSubmit}>
+      <button
+        type="submit"
+        className={styles.buttonSubmit}
+        disabled={btnDisabled}
+      >
+        {/* <LoaderSmall />  */}
         Save changes
       </button>
     </form>

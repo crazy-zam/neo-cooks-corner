@@ -26,15 +26,14 @@ const DishDetailed = () => {
           {dish.time} min
         </div>
         <div className={styles.complexity}>{complexityObj[complexity]}</div>
-        <div className={styles.likesGroup}>
+        <button className={styles.likesGroup} onClick={() => {}}>
           <Heart className={dish.isLiked ? styles.activeIcon : styles.icon} />
           <div className={styles.likes}>{dish.likes} Likes</div>
 
           <Bookmark
             className={dish.isSaved ? styles.activeIcon : styles.icon}
           />
-          {/* {dish.saves} */}
-        </div>
+        </button>
         <div className={styles.header}>Description</div>
         <div>{dish.description}</div>
         <div className={styles.header}>Ingredients</div>

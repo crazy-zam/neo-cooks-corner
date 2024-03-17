@@ -1,21 +1,10 @@
 import styles from './grid.module.less';
 import DishCard from '../DishCard/DishCard';
-import { IChef } from '@/utils/typesAPI';
+import { IChef, IRecipeSmall } from '@/utils/typesAPI';
 import ChefCard from '../ChefCard/ChefCard';
 
-interface ICard {
-  id: number;
-  title: string;
-  author: string;
-  image: string;
-  likes: number;
-  saves: number;
-  isLiked: boolean;
-  isSaved: boolean;
-}
-
 interface IGridParams {
-  array: any;
+  array: IRecipeSmall[] | IChef[];
   type?: 'chefs' | 'recipes';
 }
 
@@ -25,28 +14,28 @@ const Grid = ({ array, type = 'recipes' }: IGridParams) => {
       className={type === 'recipes' ? styles.gridWrapper4 : styles.gridWrapper6}
     >
       {type === 'recipes'
-        ? Array.from(array).map((card: ICard) => {
+        ? array.map((recipe: IRecipeSmall) => {
             return (
               <DishCard
-                key={card.id}
-                id={card.id}
-                title={card.title}
-                author={card.author}
-                image={card.image}
-                likes={card.likes}
-                saves={card.saves}
-                isLiked={card.isLiked}
-                isSaved={card.isSaved}
+                key={recipe.id}
+                id={recipe.id}
+                title={recipe.title}
+                author={recipe.author}
+                image={recipe.image}
+                likes={recipe.likes}
+                saves={recipe.saves}
+                isLiked={recipe.isLiked}
+                isSaved={recipe.isSaved}
               />
             );
           })
-        : Array.from(array).map((card: IChef) => {
+        : array.map((chef: IChef) => {
             return (
               <ChefCard
-                key={card.id}
-                id={card.id}
-                fullName={card.author}
-                image={card.photo}
+                key={chef.id}
+                id={chef.id}
+                fullName={chef.author}
+                image={chef.image}
               />
             );
           })}
