@@ -3,13 +3,13 @@ import styles from './chefCard.module.less';
 import { Link } from 'react-router-dom';
 
 interface IChefCard {
-  id: number;
+  slug: string;
   fullName: string;
   image: string;
 }
-const ChefCard = ({ id, fullName, image }: IChefCard) => {
+const ChefCard = ({ slug, fullName, image }: IChefCard) => {
   return (
-    <Link to={`/chef-details/${id}`} className={styles.wrapper}>
+    <Link to={`/chef-details/${slug}`} className={styles.wrapper}>
       <img src={image} alt={fullName} className={styles.img} />
       <div className={styles.title}>{fullName}</div>
     </Link>

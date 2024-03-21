@@ -26,8 +26,6 @@ const FormLogin = () => {
           { abortEarly: false },
         )
         .then(async () => {
-          console.log(email, password);
-
           try {
             await userStore.login(email, password);
             navigate('/main');

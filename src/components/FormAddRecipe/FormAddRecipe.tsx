@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import Loader from '@/UI/Loader/Loader';
 import { object } from 'yup';
 import LoaderSmall from '@/UI/LoaderSmall/LoaderSmall';
+import { addRecipeAPI } from '@/api/recipesApi';
+import userStore from '@/store/userStore';
 
 const FormAddRecipe = () => {
   const ingredientObj = {
@@ -13,19 +15,28 @@ const FormAddRecipe = () => {
     amount: '',
     unit: '',
   };
+  const [image, setImage] = useState<File>();
   const formik = useFormik({
     initialValues: {
       name: '',
       description: '',
       file: '',
-      tempFileURL: '',
       difficulty: 'easy',
       category: 'breakfast',
       time: '',
       ingredients: [ingredientObj],
     },
     onSubmit: (values) => {
+      const formData = new FormData();
+      formData.append('name', values.name);
+      formData.append('description', values.description);
+      formData.append('difficulty', values.difficulty);
+      formData.append('ingredients', JSON.stringify(values.ingredients));
+      formData.append('preparation_time', values.time);
+      formData.append('category', values.category);
+      formData.append('meal_picture', image, image.name);
       console.log(values);
+      addRecipeAPI(formData, userStore.accessToken);
     },
   });
   const [btnDisabled, setBtnDisabled] = useState(true);
@@ -66,16 +77,14 @@ const FormAddRecipe = () => {
           <label
             htmlFor="file"
             className={
-              formik.values.tempFileURL
-                ? styles.inputPhotoFilled
-                : styles.inputPhoto
+              formik.values.file ? styles.inputPhotoFilled : styles.inputPhoto
             }
           >
-            {formik.values.tempFileURL ? (
+            {formik.values.file ? (
               <>
                 <img
                   className={styles.smallImg}
-                  src={formik.values.tempFileURL}
+                  src={formik.values.file}
                   alt="Change photo"
                 />
                 <div>Change photo</div>
@@ -93,9 +102,9 @@ const FormAddRecipe = () => {
             type="file"
             className={styles.hiddenInput}
             onChange={(ev) => {
-              formik.setFieldValue('file', ev.target.files[0]);
+              setImage(ev.target.files[0]);
               formik.setFieldValue(
-                'tempFileURL',
+                'file',
                 ev.target.files.length === 0
                   ? ''
                   : URL.createObjectURL(ev.target.files[0]),

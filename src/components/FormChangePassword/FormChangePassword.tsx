@@ -1,5 +1,4 @@
 import { useFormik } from 'formik';
-import styles from './formRegister.module.less';
 import { eyeClosed, eyeOpened } from '@/assets';
 import { useEffect, useState } from 'react';
 import {
@@ -9,34 +8,30 @@ import {
   confirmPasswordSchema,
 } from '@/utils/validation/schemes';
 import { errorNotify } from '@/utils/toaster';
-import { registerUserAPI } from '@/api/userApi';
+import { changePasswordAPI } from '@/api/userApi';
+import styles from './formChangePassword.module.less';
 
-const FormRegister = () => {
-  const schema = usernameSchema
-    .concat(emailSchema)
-    .concat(passwordSchema)
-    .concat(confirmPasswordSchema);
+const FormChangePassword = () => {
+  const schema = passwordSchema.concat(confirmPasswordSchema);
   const formik = useFormik({
     initialValues: {
-      name: '',
-      email: '',
+      oldPassword: '',
       password: '',
       confirmPassword: '',
     },
 
-    onSubmit: ({ name, email, password, confirmPassword }) => {
+    onSubmit: ({ oldPassword, password, confirmPassword }) => {
       schema
         .validate(
           {
-            name: formik.values.name,
-            email: formik.values.email,
             password: formik.values.password,
             confirmPassword: formik.values.confirmPassword,
           },
           { abortEarly: false },
         )
         .then(() => {
-          registerUserAPI(name, password, email);
+          changePasswordAPI(oldPassword, password);
+          console.log(oldPassword, password, confirmPassword);
         })
         .catch((e) => {
           const errors = new Set(e.errors);
@@ -58,49 +53,36 @@ const FormRegister = () => {
   const [btnDisabled, setBtnDisabled] = useState(true);
   useEffect(() => {
     setBtnDisabled(
-      !formik.values.email ||
+      !formik.values.oldPassword ||
         !formik.values.password ||
-        !formik.values.name ||
         !formik.values.confirmPassword,
     );
   }, [formik.values]);
-
   return (
     <div className={styles.wrapper}>
       <form onSubmit={formik.handleSubmit} className={styles.formWrapper}>
-        <label htmlFor="name" className={styles.label}>
-          Name
+        <label htmlFor="oldPassword" className={styles.label}>
+          Old password
         </label>
         <input
-          id="name"
-          name="name"
+          id="oldPassword"
+          name="oldPassword"
           type="text"
-          placeholder="Enter your name"
+          placeholder="Enter your old password"
           onChange={formik.handleChange}
-          value={formik.values.name}
+          value={formik.values.oldPassword}
           className={styles.input}
         />
-        <label htmlFor="email" className={styles.label}>
-          Gmail
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="text"
-          placeholder="Enter your Gmail"
-          onChange={formik.handleChange}
-          value={formik.values.email}
-          className={styles.input}
-        />
+
         <label htmlFor="password" className={styles.label}>
-          Password
+          New password
         </label>
         <div className={styles.inputWrapper}>
           <input
             id="password"
             name="password"
             type={togglePassword ? 'text' : 'password'}
-            placeholder="Enter your password"
+            placeholder="Enter new password"
             onChange={formik.handleChange}
             value={formik.values.password}
             className={styles.input}
@@ -114,7 +96,7 @@ const FormRegister = () => {
           </button>
         </div>
         <label htmlFor="confirmPassword" className={styles.label}>
-          Re-Password
+          Confirm password
         </label>
         <div className={styles.inputWrapper}>
           <input
@@ -135,11 +117,11 @@ const FormRegister = () => {
           </button>
         </div>
         <button className={styles.button} type="submit" disabled={btnDisabled}>
-          Sign in
+          Change password
         </button>
       </form>
     </div>
   );
 };
 
-export default FormRegister;
+export default FormChangePassword;

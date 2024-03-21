@@ -1,8 +1,10 @@
-import { searchRecipes } from '@/api/recipesApi';
+import { searchRecipesAPI } from '@/api/recipesApi';
 import { IChef, IRecipeSmall } from '@/utils/typesAPI';
 import { makeAutoObservable } from 'mobx';
 import userStore from './userStore';
-import { searchChefs } from '@/api/userApi';
+
+import { searchChefs } from '@/api/profileAPI';
+import { isTokenExpired } from '@/utils/utils';
 
 class searchStore {
   isLoading = false;
@@ -25,11 +27,17 @@ class searchStore {
     this.getResults(this.searchString);
   };
   getResults = async (search: string) => {
+    if (isTokenExpired(userStore.refreshToken)) {
+      userStore.logout();
+    }
+    if (isTokenExpired(userStore.accessToken)) {
+      userStore.refreshTokens(userStore.refreshToken);
+    }
     this.isLoading = true;
     this.searchString = search;
-    const results =
+    const response =
       this.category === 'recipes'
-        ? await searchRecipes(
+        ? await searchRecipesAPI(
             userStore.accessToken,
             this.page,
             this.limit,
@@ -41,7 +49,7 @@ class searchStore {
             this.limit,
             search,
           );
-    this.results = results;
+    this.results = response.data;
     this.isLoading = false;
   };
 }

@@ -46,6 +46,11 @@ const InputIngredient = ({ formik, ind, addField }: IIngredient) => {
               ),
             );
           }}
+          onKeyDown={(ev) => {
+            if (/[^0-9\/]/.test(ev.key) && ev.key !== 'Backspace') {
+              ev.preventDefault();
+            }
+          }}
           value={formik.values.ingredients[ind].amount}
         />
         <select

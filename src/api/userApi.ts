@@ -1,12 +1,10 @@
 import { IChef, ITokens, IUser } from '@/utils/typesAPI';
-import { sleep } from '@/utils/utils';
 import axios from 'axios';
-import { chefs } from './chefs';
-const API = 'https://';
+import URL from './base_url';
+import { toast } from 'react-toastify';
 
 const instance = axios.create({
-  baseURL: API,
-  timeout: 2000,
+  baseURL: URL + 'users/',
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -16,13 +14,101 @@ export const userLoginAPI = async (email: string, password: string) => {
       email: email,
       password: password,
     };
-    // const response = await instance.post('/v1/auth/login', JSON.stringify(obj));
-    // const tokens: ITokens = response.data;
-    const tokens: ITokens = {
-      accessToken: 'sdf',
-      refreshToken: 'sd',
-    };
+    const response = await instance.post('login/', JSON.stringify(obj));
+    const tokens: ITokens = response.data;
     return tokens;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const refreshTokenAPI = async (refreshToken: string) => {
+  try {
+    const obj = {
+      refresh: refreshToken,
+    };
+    const response = await instance.post('login/refresh/', JSON.stringify(obj));
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const logoutAPI = async (refreshToken: string) => {
+  try {
+    const obj = {
+      refresh: refreshToken,
+    };
+    const response = await instance.post('logout/', JSON.stringify(obj));
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const changePasswordAPI = async (
+  oldPassword: string,
+  newPassword: string,
+) => {
+  try {
+    const obj = {
+      old_password: oldPassword,
+      new_password: newPassword,
+      new_password_confirm: newPassword,
+    };
+    const response = await instance.post(
+      'change-password/',
+      JSON.stringify(obj),
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const forgotPasswordAPI = async (email: string, url: string) => {
+  try {
+    const obj = {
+      email: email,
+      url: url,
+    };
+    const response = await instance.post(
+      'forgot-password/',
+      JSON.stringify(obj),
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const forgotPasswordChangeAPI = async (
+  password: string,
+  token: string,
+) => {
+  try {
+    const obj = {
+      password: password,
+      password_confirm: password,
+    };
+    const response = await instance.post(
+      'forgot-password/change/',
+      JSON.stringify(obj),
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const deleteUserAPI = async (refreshToken: string) => {
+  try {
+    const response = await instance.delete('forgot-password/', {
+      params: {
+        refresh: refreshToken,
+      },
+    });
+    return response.data;
   } catch (error) {
     throw error.response.data;
   }
@@ -36,65 +122,42 @@ export const registerUserAPI = async (
   try {
     const obj = {
       username: username,
-      password: password,
       email: email,
+      password: password,
+      password_confirm: password,
+      // url: 'https://crazy-zam.github.io/neo-cooks-corner/#/auth/confirmation?ct=',
+      url: 'http://localhost:3000/#/auth/confirmation?ct=',
     };
-    const response = await instance.post('/v1/users/', JSON.stringify(obj));
+    const response = await instance.post('signup/', JSON.stringify(obj));
+    console.log(response);
+    toast(response.data);
   } catch (error) {
-    throw error.response.data;
+    console.log(error);
+    toast(error.data.Message);
+    return error.response.data;
   }
 };
 
-export const refreshTokenAPI = async (refreshToken: string) => {
+export const resendEmailAPI = async (email: string, url: string) => {
   try {
-    let data = `Bearer ${refreshToken}`;
-    const accessToken = await instance.post('/v1/auth/refresh', data);
-    return accessToken.data;
-  } catch (error) {
-    throw error.response.data;
-  }
-};
-
-export const getUserAPI = async (accessToken: string) => {
-  try {
-    // const response = await instance.get('/v1/users', {
-    //   headers: { Authorization: 'Bearer ' + accessToken },
-    // });
-    // const user: IUser = response.data;
-    const user: IUser = {
-      username: 'test',
-      bio: 'test bio',
-      photo: 'https://robohash.org/illoquoquia.png?size=160x160&set=set1',
-      recipes: 5,
-      followers: 3,
-      follow: 2,
+    const obj = {
+      email: email,
+      url: url,
     };
-    await sleep(1000);
-    return user;
+    const response = await instance.post('resend-email/', JSON.stringify(obj));
+    toast(response.data);
   } catch (error) {
     throw error.response.data;
   }
 };
-
-export const searchChefs = async (
-  accessToken: string,
-  page: number,
-  limit: number,
-  search: string,
-) => {
+export const emailVerifyAPI = async (token: string) => {
   try {
-    // const response = await instance.get(`/v1/users/search/`, {
-    //   headers: { Authorization: 'Bearer ' + accessToken },
-    //   params: {
-    //     page: page,
-    //     limit: limit,
-    //     search: search,
-    //   },
-    // });
-    // await sleep(1000);
-    // const chefsArr: Array<IRecipeSmall> = dishes;
-    const chefsArr: Array<IChef> = chefs;
-    return chefsArr;
+    const response = await instance.get('email-verify/', {
+      params: {
+        token: token,
+      },
+    });
+    toast(response.data);
   } catch (error) {
     throw error.response.data;
   }

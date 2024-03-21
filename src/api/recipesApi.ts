@@ -1,86 +1,73 @@
-import { IRecipe, IRecipeSmall } from '@/utils/typesAPI';
+import { IRecipe, IRecipeSmall, IResponseRecipesArr } from '@/utils/typesAPI';
 import axios from 'axios';
-const API = 'https://';
-import { dishes } from './dishes';
-import { sleep } from '@/utils/utils';
+import URL from './base_url';
+
 const instance = axios.create({
-  baseURL: API,
+  baseURL: URL + 'recipes/',
   timeout: 2000,
   headers: { 'Content-Type': 'application/json' },
 });
 
-export const getRecipes = async (
+export const addRecipeAPI = async (formData: FormData, accessToken: string) => {
+  try {
+    const response = await instance.post('add-recipe/', formData, {
+      headers: {
+        Authorization: 'Bearer ' + accessToken,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+export const getRecipesByCategoryAPI = async (
   accessToken: string,
   category: string,
   page: number,
   limit: number,
 ) => {
   try {
-    // const response = await instance.get('/v1/recipes', {
-    //   headers: { Authorization: 'Bearer ' + accessToken },
-    //   params: {
-    //     category: category,
-    //     page: page,
-    //     limit: limit,
-    //   },
-    // });
-    // const recipesArr: Array<IRecipeSmall> = response.data;
-    await sleep(1000);
-    const recipesArr: Array<IRecipeSmall> = dishes;
-    return recipesArr;
+    const response = await instance.get('by-category/', {
+      headers: { Authorization: 'Bearer ' + accessToken },
+      params: {
+        category: category,
+        // page: page,
+        // limit: limit,
+      },
+    });
+    const responseData: IResponseRecipesArr = response.data;
+    return responseData;
   } catch (error) {
     throw error.response.data;
   }
 };
 
-export const getRecipesById = async (
+export const getRecipesByChefAPI = async (
   accessToken: string,
-  page: number,
-  limit: number,
-  id: number,
-) => {
-  try {
-    // const response = await instance.get(`/v1/recipes/by-chef/:${id}`, {
-    //   headers: { Authorization: 'Bearer ' + accessToken },
-    //   params: {
-    //     page: page,
-    //     limit: limit,
-    //   },
-    // });
-    // const recipesArr: Array<IRecipeSmall> = response.data;
-    await sleep(1000);
-    const recipesArr: Array<IRecipeSmall> = dishes;
-    return recipesArr;
-  } catch (error) {
-    throw error.response.data;
-  }
-};
-
-export const getSavedRecipes = async (
-  accessToken: string,
+  slug: string,
   page: number,
   limit: number,
 ) => {
   try {
-    // const response = await instance.get('/v1/saved-recipes', {
-    //   headers: { Authorization: 'Bearer ' + accessToken },
-    //   params: {
-    //     page: page,
-    //     limit: limit,
-    //   },
-    // });
-    // const recipesArr: Array<IRecipeSmall> = response.data;
-    await sleep(1000);
-    const recipesArr: Array<IRecipeSmall> = dishes;
-    return recipesArr;
+    const response = await instance.get(`by-chef/${slug}`, {
+      headers: { Authorization: 'Bearer ' + accessToken },
+      // params: {
+      //   page: page,
+      //   limit: limit,
+      // },
+    });
+    const responseData: IResponseRecipesArr = response.data;
+    return responseData;
   } catch (error) {
     throw error.response.data;
   }
 };
 
-export const getRecipeById = async (accessToken: string, id: number) => {
+export const getRecipeBySlugAPI = async (accessToken: string, slug: string) => {
   try {
-    const response = await instance.get(`/v1/recipes/:${id}`, {
+    const response = await instance.get(`/recipes/detail/:${slug}/`, {
       headers: { Authorization: 'Bearer ' + accessToken },
     });
     const recipe: IRecipe = response.data;
@@ -90,25 +77,78 @@ export const getRecipeById = async (accessToken: string, id: number) => {
   }
 };
 
-export const searchRecipes = async (
+export const likeRecipeAPI = async (
+  accessToken: string,
+  slug: string,
+  prev: boolean,
+) => {
+  try {
+    const response = await instance.put(
+      `like/${slug}`,
+      {},
+      { headers: { Authorization: `Bearer ${accessToken}` } },
+    );
+
+    return response;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const saveRecipeAPI = async (
+  accessToken: string,
+  slug: string,
+  prev: boolean,
+) => {
+  try {
+    const response = await instance.put(
+      `save/${slug}`,
+      {},
+      { headers: { Authorization: `Bearer ${accessToken}` } },
+    );
+    return response;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const getSavedRecipesAPI = async (
+  accessToken: string,
+  page: number,
+  limit: number,
+) => {
+  try {
+    const response = await instance.get('saved-recipes/', {
+      headers: { Authorization: 'Bearer ' + accessToken },
+      // params: {
+      //   page: page,
+      //   limit: limit,
+      // },
+    });
+    const responseData: IResponseRecipesArr = response.data;
+    return responseData;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const searchRecipesAPI = async (
   accessToken: string,
   page: number,
   limit: number,
   search: string,
 ) => {
   try {
-    // const response = await instance.get(`/v1/recipes/search/`, {
-    //   headers: { Authorization: 'Bearer ' + accessToken },
-    //   params: {
-    //     page: page,
-    //     limit: limit,
-    //     search: search,
-    //   },
-    // });
-    // const recipesArr: Array<IRecipeSmall> = response.data;
-    await sleep(1000);
-    const recipesArr: Array<IRecipeSmall> = dishes;
-    return recipesArr;
+    const response = await instance.get(`search/`, {
+      headers: { Authorization: 'Bearer ' + accessToken },
+      params: {
+        // page: page,
+        // limit: limit,
+        search: search,
+      },
+    });
+    const responseData: IResponseRecipesArr = response.data;
+    return responseData;
   } catch (error) {
     throw error.response.data;
   }

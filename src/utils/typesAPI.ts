@@ -1,31 +1,33 @@
 export interface IUser {
+  slug?: string;
   username: string;
   bio: string;
   photo: string;
   recipes: number;
   followers: number;
   follow: number;
+  isFollow?: boolean;
 }
 
 export interface ITokens {
-  accessToken: string;
-  refreshToken: string;
+  access: string;
+  refresh: string;
 }
 
 export interface IChef {
-  id: number;
-  author: string;
-  image: string;
+  slug: string;
+  author_name: string;
+  author_photo: string;
 }
 
 export interface IRecipe {
-  id: number;
-  title: string;
-  author: string;
-  authorId: number;
-  photo: string;
-  time: string;
-  complexity: string;
+  slug: string;
+  name: string;
+  author_name: string;
+  author_slug: string;
+  meal_picture: string;
+  preparation_time: number;
+  difficulty: string;
   likes: number;
   isLiked: boolean;
   saves: number;
@@ -34,25 +36,26 @@ export interface IRecipe {
   ingredients: Array<IIngredient>;
 }
 export interface IIngredient {
-  ingridient: string;
+  ingredient_name: string;
   amount: string;
   unit: string;
 }
 
 export interface IRecipeSmall {
-  id: number;
+  slug: string;
   title: string;
-  author: string;
-  image: string;
+  author_name: string;
+  meal_picture: string;
   likes: number;
   isLiked: boolean;
   saves: number;
   isSaved: boolean;
 }
-
-export interface ITodo {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
+export interface IResponseRecipesArr {
+  data: Array<IRecipeSmall>;
+  total: number;
+}
+export interface IResponseChefssArr {
+  data: Array<IChef>;
+  total: number;
 }

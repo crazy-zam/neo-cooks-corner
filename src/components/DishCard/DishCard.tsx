@@ -3,7 +3,7 @@ import styles from './dishCard.module.less';
 import { Link } from 'react-router-dom';
 
 interface IRecipeCard {
-  id: number;
+  slug: string;
   title: string;
   author: string;
   image: string;
@@ -13,7 +13,7 @@ interface IRecipeCard {
   isSaved: boolean;
 }
 const DishCard = ({
-  id,
+  slug,
   title,
   author,
   image,
@@ -23,7 +23,7 @@ const DishCard = ({
   isSaved,
 }: IRecipeCard) => {
   return (
-    <Link to={`/recipe/${id}`} className={styles.wrapper}>
+    <Link to={`/recipe/${slug}`} className={styles.wrapper}>
       <img src={image} alt={title} className={styles.img} />
       <div className={styles.title}>{title}</div>
       <div className={styles.author}>by {author}</div>

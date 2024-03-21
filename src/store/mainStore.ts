@@ -1,16 +1,17 @@
-import { getRecipes } from '@/api/recipesApi';
+import { getRecipesByCategoryAPI } from '@/api/recipesApi';
 import { IRecipeSmall } from '@/utils/typesAPI';
 import { makeAutoObservable, runInAction } from 'mobx';
 import userStore from './userStore';
+import { isTokenExpired } from '@/utils/utils';
 
 class mainStore {
   isLoading: boolean = false;
   category: 'breakfast' | 'lunch' | 'dinner' = 'breakfast';
   recipes: Array<IRecipeSmall> = [];
-  totalRecipes = 36;
+  totalRecipes = 0;
   page = 1;
-  limit = 6;
-  detailed: number;
+  limit = 12;
+  detailed = 0;
 
   constructor() {
     makeAutoObservable(this);
@@ -28,20 +29,29 @@ class mainStore {
     this.detailed = id;
   };
   getRecipesAction = async () => {
+    if (isTokenExpired(userStore.refreshToken)) {
+      userStore.logout();
+    }
+    if (isTokenExpired(userStore.accessToken)) {
+      userStore.refreshTokens(userStore.refreshToken);
+    }
     this.isLoading = true;
-
     try {
-      const response = await getRecipes(
+      const response = await getRecipesByCategoryAPI(
         userStore.accessToken,
         this.category,
         this.page,
         this.limit,
       );
-      this.recipes = response;
+
+      this.recipes = response.data;
+      this.totalRecipes = response.total;
     } catch (error) {
       console.log(error);
     } finally {
-      this.isLoading = false;
+      runInAction(() => {
+        this.isLoading = false;
+      });
     }
   };
 }

@@ -12,6 +12,7 @@ import { observer } from 'mobx-react-lite';
 import userStore from './store/userStore';
 import DishDetailed from './pages/DishDetailed/DishDetailed';
 import { Scrollbar } from 'react-scrollbars-custom';
+import EmailValidate from './pages/EmailValidate/EmailValidate';
 Modal.setAppElement('#root');
 const App = observer(() => {
   return (
@@ -62,6 +63,7 @@ const App = observer(() => {
         <Routes>
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/registration" element={<Register />} />
+          <Route path="/auth/confirmation" element={<EmailValidate />} />
           <Route path="*" element={<Navigate to="/auth/login" />} />
         </Routes>
       )}

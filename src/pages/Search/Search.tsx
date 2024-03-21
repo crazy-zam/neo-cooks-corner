@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Grid from '../../components/Grid/Grid';
-
 import styles from './search.module.less';
 import { AddBtn, Loupe, SearchClear } from '@/assets';
 import ModalContainer from '@/components/ModalContainer/ModalContainer';
@@ -8,8 +7,8 @@ import FormAddRecipe from '@/components/FormAddRecipe/FormAddRecipe';
 import { observer } from 'mobx-react-lite';
 import searchStore from '@/store/searchStore';
 import Loader from '@/UI/Loader/Loader';
-import LoaderSmall from '@/UI/LoaderSmall/LoaderSmall';
 import PageBtnGroup from '@/UI/PageBtnGroup/PageBtnGroup';
+
 const Search = observer(() => {
   const [search, setSearch] = useState('');
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -84,7 +83,6 @@ const Search = observer(() => {
       <button className={styles.addBtn} onClick={openModal}>
         <AddBtn className={styles.addBtnIcon} />
         Add your recipe
-        {/* <LoaderSmall /> */}
       </button>
       <ModalContainer
         modalIsOpen={modalIsOpen}

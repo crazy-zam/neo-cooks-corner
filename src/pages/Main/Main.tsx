@@ -50,8 +50,14 @@ const Main = observer(() => {
           <Loader />
         ) : (
           <>
-            <Grid array={mainStore.recipes}></Grid>
-            <PageBtnGroup store={mainStore} />
+            {mainStore.recipes.length === 0 ? (
+              <div className={styles.noResults}>No results</div>
+            ) : (
+              <>
+                <Grid array={mainStore.recipes}></Grid>
+                <PageBtnGroup store={mainStore} />
+              </>
+            )}
           </>
         )}
       </div>

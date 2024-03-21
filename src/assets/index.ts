@@ -2,6 +2,7 @@ import eyeOpened from './eyeOpened.png';
 import eyeClosed from './eyeClosed.png';
 import emailImg from './email.png';
 import personImg from './person.png';
+import defaultPhoto from './default_photo.png';
 import LogoSmall from './logoSmall.svg';
 import HomeIcon from './home.svg';
 import SearchIcon from './search.svg';
@@ -16,7 +17,6 @@ import CloseModal from './closeModal.svg';
 import Loupe from './loupe.svg';
 import SearchClear from './clearSearch.svg';
 import AddBtn from './addBtn.svg';
-
 import ArrowLeft from './leftArrow.svg';
 import ArrowLeftDouble from './leftDoubleArrow.svg';
 import ArrowRight from './rightArrow.svg';
@@ -25,6 +25,7 @@ export {
   eyeClosed,
   eyeOpened,
   personImg,
+  defaultPhoto,
   emailImg,
   ClockIcon,
   LogoSmall,
