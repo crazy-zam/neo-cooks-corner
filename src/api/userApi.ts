@@ -79,8 +79,8 @@ export const forgotPasswordAPI = async (email: string) => {
   try {
     const obj = {
       email: email,
-      // url: 'https://crazy-zam.github.io/neo-cooks-corner/#/auth/change-password?fpt=',
-      url: 'http://localhost:3000/#/auth/change-password?fpt=',
+      url: 'https://crazy-zam.github.io/neo-cooks-corner/#/auth/change-password?fpt=',
+      // url: 'http://localhost:3000/#/auth/change-password?fpt=',
     };
     const response = await instance.post(
       'forgot-password/',
