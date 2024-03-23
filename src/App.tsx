@@ -14,6 +14,7 @@ import DishDetailed from './pages/DishDetailed/DishDetailed';
 import { Scrollbar } from 'react-scrollbars-custom';
 import EmailValidate from './pages/EmailValidate/EmailValidate';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
+import ChangePassword from './pages/ChangePassword/ChangePassword';
 Modal.setAppElement('#root');
 const App = observer(() => {
   return (
@@ -66,6 +67,7 @@ const App = observer(() => {
           <Route path="/auth/registration" element={<Register />} />
           <Route path="/auth/confirmation" element={<EmailValidate />} />
           <Route path="/auth/forgot" element={<ForgotPassword />} />
+          <Route path="/auth/change-password" element={<ChangePassword />} />
           <Route path="*" element={<Navigate to="/auth/login" />} />
         </Routes>
       )}

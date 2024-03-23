@@ -68,10 +68,16 @@ const ForgotPassword = () => {
       <ModalContainer
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}
-        title="We send instructions for change password on your email"
+        title="Succes"
         closeModalBtn={true}
       >
-        <Link to="/auth/login">Go to login page</Link>
+        <div>
+          We send instructions for change <br />
+          password on your email
+        </div>
+        <Link className={styles.modalBtn} to="/auth/login">
+          Go to login page
+        </Link>
       </ModalContainer>
     </div>
   );
