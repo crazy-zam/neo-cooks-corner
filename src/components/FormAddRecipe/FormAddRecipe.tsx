@@ -16,7 +16,7 @@ const FormAddRecipe = ({ closeModal }: IModal) => {
   const ingredientObj = {
     ingredient_name: '',
     amount: '',
-    unit: '',
+    unit: 'kg',
   };
   const [image, setImage] = useState<File>();
   const formik = useFormik({
@@ -42,6 +42,7 @@ const FormAddRecipe = ({ closeModal }: IModal) => {
       await userStore.checkTokens();
       await addRecipeAPI(formData, userStore.accessToken);
       setIsLoading(false);
+
       closeModal();
     },
   });
