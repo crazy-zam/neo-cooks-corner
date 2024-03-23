@@ -11,8 +11,8 @@ const FormChangeProfile = ({ closeModal }: IModal) => {
   const [image, setImage] = useState<File>();
   const formik = useFormik({
     initialValues: {
-      fullName: '',
-      bio: '',
+      fullName: userStore.username,
+      bio: userStore.bio,
       file: '',
     },
     onSubmit: async (values) => {

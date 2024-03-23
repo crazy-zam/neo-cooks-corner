@@ -40,6 +40,7 @@ const InputIngredient = ({ formik, ind, addField }: IIngredient) => {
               'ingredients',
               formik.values.ingredients.map(
                 (obj: typeof ingredientObj, index: number) => {
+                  console.log(obj);
                   if (index === ind) return { ...obj, amount: ev.target.value };
                   return obj;
                 },
@@ -65,14 +66,15 @@ const InputIngredient = ({ formik, ind, addField }: IIngredient) => {
                 },
               ),
             );
-            console.log('unit', formik.values.ingredients);
           }}
           value={formik.values.ingredients[ind].unit}
         >
           <option selected value="kg">
             kg
           </option>
-          <option value="g">g</option>
+          <option selected value="g">
+            g
+          </option>
           <option value="ml">ml</option>
           <option value="glass">glass</option>
           <option value="spoon">spoon</option>
