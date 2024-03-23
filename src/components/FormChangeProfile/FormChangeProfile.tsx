@@ -16,12 +16,18 @@ const FormChangeProfile = ({ closeModal }: IModal) => {
       file: '',
     },
     onSubmit: async (values) => {
-      const formData = new FormData();
-      formData.append('username', values.fullName);
-      formData.append('bio', values.bio);
-      formData.append('profile_picture', image, image.name);
-      await userStore.changeProfile(formData);
-      closeModal();
+      try {
+        const formData = new FormData();
+        formData.append('username', values.fullName);
+        formData.append('bio', values.bio);
+        formData.append('profile_picture', image, image.name);
+        await userStore.changeProfile(formData);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        closeModal();
+        userStore.getUser();
+      }
     },
   });
   return (

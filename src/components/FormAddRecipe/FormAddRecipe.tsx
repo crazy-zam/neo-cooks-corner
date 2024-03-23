@@ -39,6 +39,7 @@ const FormAddRecipe = ({ closeModal }: IModal) => {
       formData.append('category', values.category);
       formData.append('meal_picture', image, image.name);
       setIsLoading(true);
+      await userStore.checkTokens();
       await addRecipeAPI(formData, userStore.accessToken);
       setIsLoading(false);
       closeModal();

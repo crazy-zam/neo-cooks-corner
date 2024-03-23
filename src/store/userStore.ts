@@ -154,6 +154,7 @@ class userStore {
     this.getRecipesAction();
   };
   changeProfile = async (formData: FormData) => {
+    this.checkTokens();
     try {
       this.isLoading = true;
       const response = await updateProfileAPI(this.accessToken, formData);

@@ -2,7 +2,6 @@ import { IRecipe, IRecipeSmall, IResponseRecipesArr } from '@/utils/typesAPI';
 import axios from 'axios';
 import URL from './base_url';
 import { successNotify } from '@/utils/toaster';
-import userStore from '@/store/userStore';
 
 const instance = axios.create({
   baseURL: URL + 'recipes/',
@@ -11,7 +10,6 @@ const instance = axios.create({
 });
 
 export const addRecipeAPI = async (formData: FormData, accessToken: string) => {
-  await userStore.checkTokens();
   try {
     const response = await instance.post('add-recipe/', formData, {
       headers: {
