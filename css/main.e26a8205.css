@@ -2461,6 +2461,9 @@ legend {
   font-weight: 400;
   font-size: 16px;
 }
+.vjdS9OWF:disabled {
+  background-color: #8a8a8a;
+}
 
 .AJfZQzph {
   width: 48px;
@@ -2706,6 +2709,10 @@ legend {
 }
 .JWPVZGTs:hover {
   background-color: #fa9e31;
+  color: #fafafa;
+}
+.JWPVZGTs:disabled {
+  background-color: #8a8a8a;
   color: #fafafa;
 }
 .o_MSctnL {
@@ -3220,6 +3227,9 @@ legend {
 .ElB2MXIm {
   width: 24px;
   height: 24px;
+}
+.R5aTufz9:disabled {
+  background-color: #8a8a8a;
 }
 
 .rgAgb1VH {
@@ -4483,4 +4493,4 @@ legend {
 }
 
 
-/*# sourceMappingURL=main.7de029b3.css.map*/
+/*# sourceMappingURL=main.e26a8205.css.map*/
