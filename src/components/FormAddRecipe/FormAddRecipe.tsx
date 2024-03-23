@@ -134,7 +134,6 @@ const FormAddRecipe = ({ closeModal }: IModal) => {
           />
         </div>
         <div className={styles.difficultyContainer}>
-          {' '}
           <label htmlFor="difficulty" className={styles.label}>
             Difficulty
           </label>
@@ -148,7 +147,12 @@ const FormAddRecipe = ({ closeModal }: IModal) => {
           <label className={styles.label} htmlFor="category">
             Category of meal
           </label>
-          <select name="category" id="category" className={styles.selectGrey}>
+          <select
+            name="category"
+            id="category"
+            className={styles.selectGrey}
+            onChange={formik.handleChange}
+          >
             <option selected value="Breakfast">
               Breakfast
             </option>
