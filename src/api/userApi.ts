@@ -1,7 +1,9 @@
-import { IChef, ITokens, IUser } from '@/utils/typesAPI';
+import { ITokens } from '@/utils/typesAPI';
 import axios from 'axios';
 import URL from './base_url';
 import { toast } from 'react-toastify';
+import { errorNotify, successNotify } from '@/utils/toaster';
+import userStore from '@/store/userStore';
 
 const instance = axios.create({
   baseURL: URL + 'users/',
@@ -18,6 +20,7 @@ export const userLoginAPI = async (email: string, password: string) => {
     const tokens: ITokens = response.data;
     return tokens;
   } catch (error) {
+    errorNotify(error.response.data.Error);
     throw error.response.data;
   }
 };
@@ -28,8 +31,10 @@ export const refreshTokenAPI = async (refreshToken: string) => {
       refresh: refreshToken,
     };
     const response = await instance.post('login/refresh/', JSON.stringify(obj));
-    return response.data;
+    const tokens: ITokens = response.data;
+    return tokens;
   } catch (error) {
+    errorNotify(error.response.data.Error);
     throw error.response.data;
   }
 };
@@ -42,6 +47,7 @@ export const logoutAPI = async (refreshToken: string) => {
     const response = await instance.post('logout/', JSON.stringify(obj));
     return response.data;
   } catch (error) {
+    errorNotify(error.response.data.Error);
     throw error.response.data;
   }
 };
@@ -59,25 +65,31 @@ export const changePasswordAPI = async (
     const response = await instance.post(
       'change-password/',
       JSON.stringify(obj),
+      { headers: { Authorization: `Bearer ${userStore.accessToken}` } },
     );
+    successNotify(response.data.Message);
     return response.data;
   } catch (error) {
+    errorNotify(error.response.data.Error);
     throw error.response.data;
   }
 };
 
-export const forgotPasswordAPI = async (email: string, url: string) => {
+export const forgotPasswordAPI = async (email: string) => {
   try {
     const obj = {
       email: email,
-      url: url,
+      url: 'https://crazy-zam.github.io/neo-cooks-corner/#/auth/confirmation?ct=',
+      // url: 'http://localhost:3000/#/auth/confirmation?ct=',
     };
     const response = await instance.post(
       'forgot-password/',
       JSON.stringify(obj),
     );
+    successNotify(response.data.Message);
     return response.data;
   } catch (error) {
+    errorNotify(error.response.data.Error);
     throw error.response.data;
   }
 };
@@ -125,12 +137,11 @@ export const registerUserAPI = async (
       email: email,
       password: password,
       password_confirm: password,
-      // url: 'https://crazy-zam.github.io/neo-cooks-corner/#/auth/confirmation?ct=',
-      url: 'http://localhost:3000/#/auth/confirmation?ct=',
+      url: 'https://crazy-zam.github.io/neo-cooks-corner/#/auth/confirmation?ct=',
+      // url: 'http://localhost:3000/#/auth/confirmation?ct=',
     };
     const response = await instance.post('signup/', JSON.stringify(obj));
-    console.log(response);
-    toast(response.data);
+    return response.data;
   } catch (error) {
     console.log(error);
     toast(error.data.Message);

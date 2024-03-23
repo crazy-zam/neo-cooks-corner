@@ -2,12 +2,13 @@ import { useFormik } from 'formik';
 import styles from './formLogin.module.less';
 import { eyeClosed, eyeOpened } from '@/assets';
 import { useEffect, useState } from 'react';
-import { userLoginAPI } from '@/api/userApi';
 import { emailSchema, passwordSchema } from '@/utils/validation/schemes';
 import { errorNotify } from '@/utils/toaster';
 import { useNavigate } from 'react-router-dom';
 import userStore from '@/store/userStore';
-const FormLogin = () => {
+import LoaderSmall from '@/UI/LoaderSmall/LoaderSmall';
+import { observer } from 'mobx-react-lite';
+const FormLogin = observer(() => {
   const navigate = useNavigate();
   const schema = emailSchema.concat(passwordSchema);
   const formik = useFormik({
@@ -86,11 +87,11 @@ const FormLogin = () => {
           </button>
         </div>
         <button className={styles.button} type="submit" disabled={btnDisabled}>
-          Sign in
+          {userStore.isLoading ? <LoaderSmall /> : 'Sign in'}
         </button>
       </form>
     </div>
   );
-};
+});
 
 export default FormLogin;

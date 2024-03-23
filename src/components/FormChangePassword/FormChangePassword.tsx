@@ -2,16 +2,19 @@ import { useFormik } from 'formik';
 import { eyeClosed, eyeOpened } from '@/assets';
 import { useEffect, useState } from 'react';
 import {
-  usernameSchema,
-  emailSchema,
   passwordSchema,
   confirmPasswordSchema,
 } from '@/utils/validation/schemes';
-import { errorNotify } from '@/utils/toaster';
+import { errorNotify, successNotify } from '@/utils/toaster';
 import { changePasswordAPI } from '@/api/userApi';
 import styles from './formChangePassword.module.less';
 
-const FormChangePassword = () => {
+interface IModal {
+  closeModal: () => void;
+}
+
+const FormChangePassword = ({ closeModal }: IModal) => {
+  const [isLoading, setIsLoading] = useState(false);
   const schema = passwordSchema.concat(confirmPasswordSchema);
   const formik = useFormik({
     initialValues: {
@@ -31,13 +34,16 @@ const FormChangePassword = () => {
         )
         .then(() => {
           changePasswordAPI(oldPassword, password);
-          console.log(oldPassword, password, confirmPassword);
         })
         .catch((e) => {
           const errors = new Set(e.errors);
           errors.forEach((err: string) => {
             errorNotify(err);
           });
+        })
+        .finally(() => {
+          setIsLoading(false);
+          closeModal();
         });
     },
   });

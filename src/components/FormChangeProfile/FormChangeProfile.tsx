@@ -1,16 +1,27 @@
 import { Camera } from '@/assets';
 import { useFormik } from 'formik';
 import styles from './formChangeProfile.module.less';
-const FormChangeProfile = () => {
+import { useState } from 'react';
+import userStore from '@/store/userStore';
+import LoaderSmall from '@/UI/LoaderSmall/LoaderSmall';
+interface IModal {
+  closeModal: () => void;
+}
+const FormChangeProfile = ({ closeModal }: IModal) => {
+  const [image, setImage] = useState<File>();
   const formik = useFormik({
     initialValues: {
       fullName: '',
       bio: '',
       file: '',
-      tempFileURL: '',
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const formData = new FormData();
+      formData.append('username', values.fullName);
+      formData.append('bio', values.bio);
+      formData.append('profile_picture', image, image.name);
+      await userStore.changeProfile(formData);
+      closeModal();
     },
   });
   return (
@@ -45,16 +56,14 @@ const FormChangeProfile = () => {
       <label
         htmlFor="file"
         className={
-          formik.values.tempFileURL
-            ? styles.inputPhotoFilled
-            : styles.inputPhoto
+          formik.values.file ? styles.inputPhotoFilled : styles.inputPhoto
         }
       >
-        {formik.values.tempFileURL ? (
+        {formik.values.file ? (
           <>
             <img
               className={styles.smallImg}
-              src={formik.values.tempFileURL}
+              src={formik.values.file}
               alt="Change photo"
             />
             <div>Change photo</div>
@@ -72,9 +81,10 @@ const FormChangeProfile = () => {
         type="file"
         className={styles.hiddenInput}
         onChange={(ev) => {
-          formik.setFieldValue('file', ev.target.files[0]);
+          setImage(ev.target.files[0]);
+
           formik.setFieldValue(
-            'tempFileURL',
+            'file',
             ev.target.files.length === 0
               ? ''
               : URL.createObjectURL(ev.target.files[0]),
@@ -83,7 +93,7 @@ const FormChangeProfile = () => {
       />
 
       <button type="submit" className={styles.buttonSubmit}>
-        Save changes
+        {userStore.isLoading ? <LoaderSmall /> : 'Save changes'}
       </button>
     </form>
   );

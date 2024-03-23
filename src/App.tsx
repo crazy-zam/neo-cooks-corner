@@ -13,6 +13,7 @@ import userStore from './store/userStore';
 import DishDetailed from './pages/DishDetailed/DishDetailed';
 import { Scrollbar } from 'react-scrollbars-custom';
 import EmailValidate from './pages/EmailValidate/EmailValidate';
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 Modal.setAppElement('#root');
 const App = observer(() => {
   return (
@@ -51,10 +52,10 @@ const App = observer(() => {
           >
             <Routes>
               <Route path="/main" element={<Main />} />
-              <Route path="/chef-details/:id" element={<ChefDetailed />} />
+              <Route path="/chef-details/:slug" element={<ChefDetailed />} />
               <Route path="/my-profile" element={<MyProfile />} />
               <Route path="/search" element={<Search />} />
-              <Route path="/recipe/:id" element={<DishDetailed />} />
+              <Route path="/recipe/:slug" element={<DishDetailed />} />
               <Route path="*" element={<Navigate to="/main" />} />
             </Routes>
           </Scrollbar>
@@ -64,6 +65,7 @@ const App = observer(() => {
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/registration" element={<Register />} />
           <Route path="/auth/confirmation" element={<EmailValidate />} />
+          <Route path="/auth/forgot" element={<ForgotPassword />} />
           <Route path="*" element={<Navigate to="/auth/login" />} />
         </Routes>
       )}

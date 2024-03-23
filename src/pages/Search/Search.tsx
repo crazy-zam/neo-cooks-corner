@@ -8,6 +8,8 @@ import { observer } from 'mobx-react-lite';
 import searchStore from '@/store/searchStore';
 import Loader from '@/UI/Loader/Loader';
 import PageBtnGroup from '@/UI/PageBtnGroup/PageBtnGroup';
+import { useDebounce } from '@/hooks/useDebounce';
+import useColumnsGrid from '@/hooks/useGridColumnsRecipes';
 
 const Search = observer(() => {
   const [search, setSearch] = useState('');
@@ -35,6 +37,16 @@ const Search = observer(() => {
       </button>
     );
   };
+  const debounceSearch = useDebounce((search: string) => {
+    if (search === '') return;
+    searchStore.getResults(search);
+  });
+  const searchHandler = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(ev.target.value);
+    debounceSearch(ev.target.value);
+  };
+  const columnsRecipes = useColumnsGrid(searchStore.limit, 280);
+  const columnsChefs = useColumnsGrid(searchStore.limit, 200);
   return (
     <div className={styles.wrapper}>
       <div>What to eat today?</div>
@@ -48,17 +60,10 @@ const Search = observer(() => {
           className={search !== '' ? styles.searchFilled : styles.searchEmpty}
           type="text"
           value={search}
-          onChange={(ev) => {
-            setSearch(ev.target.value);
-          }}
+          onChange={searchHandler}
         ></input>
-        {search !== '' ? (
-          <Loupe
-            className={styles.searchInner}
-            onClick={() => {
-              searchStore.getResults(search);
-            }}
-          />
+        {search === '' ? (
+          <Loupe className={styles.searchInner} />
         ) : (
           <SearchClear
             className={styles.searchInner}
@@ -74,8 +79,20 @@ const Search = observer(() => {
           <Loader />
         ) : (
           <>
-            <Grid array={searchStore.results} type={searchStore.category} />{' '}
-            <PageBtnGroup store={searchStore} />
+            {searchStore.results.length !== 0 && (
+              <>
+                <Grid
+                  array={searchStore.results}
+                  type={searchStore.category}
+                  columns={
+                    searchStore.category === 'chefs'
+                      ? columnsChefs
+                      : columnsRecipes
+                  }
+                />
+                <PageBtnGroup store={searchStore} />
+              </>
+            )}
           </>
         )}
       </div>
@@ -90,7 +107,7 @@ const Search = observer(() => {
         title="Create recipe"
         closeModalBtn={true}
       >
-        <FormAddRecipe />
+        <FormAddRecipe closeModal={closeModal} />
       </ModalContainer>
     </div>
   );

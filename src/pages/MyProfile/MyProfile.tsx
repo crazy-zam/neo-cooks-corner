@@ -10,7 +10,6 @@ import { observer } from 'mobx-react-lite';
 import Loader from '@/UI/Loader/Loader';
 import { defaultPhoto } from '@/assets';
 import FormChangePassword from '@/components/FormChangePassword/FormChangePassword';
-import { resendEmailAPI } from '@/api/userApi';
 
 const MyProfile = observer(() => {
   const [modalProfileIsOpen, setmodalProfileIsOpen] = useState(false);
@@ -84,7 +83,7 @@ const MyProfile = observer(() => {
               <Loader />
             ) : (
               <>
-                <Grid array={userStore.recipesArr} />
+                <Grid array={userStore.recipesArr} columns={4} />
                 <PageBtnGroup store={userStore} />
               </>
             )}
@@ -114,7 +113,7 @@ const MyProfile = observer(() => {
         title="Manage profile"
         closeModalBtn={true}
       >
-        <FormChangeProfile />
+        <FormChangeProfile closeModal={toggleProfileModal(false)} />
       </ModalContainer>
       <ModalContainer
         modalIsOpen={modalPasswordIsOpen}
@@ -122,7 +121,7 @@ const MyProfile = observer(() => {
         title="Change password"
         closeModalBtn={true}
       >
-        <FormChangePassword />
+        <FormChangePassword closeModal={togglePasswordModal(false)} />
       </ModalContainer>
     </div>
   );

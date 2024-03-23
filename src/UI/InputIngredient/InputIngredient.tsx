@@ -2,7 +2,7 @@ import { AddBtn, CloseModal } from '@/assets';
 import styles from './inputIngredient.module.less';
 import { FormikValues } from 'formik';
 const ingredientObj = {
-  ingredient: '',
+  ingredient_name: '',
   amount: '',
   unit: '',
 };
@@ -23,7 +23,7 @@ const InputIngredient = ({ formik, ind, addField }: IIngredient) => {
             formik.values.ingredients.map(
               (obj: typeof ingredientObj, index: number) => {
                 if (index === ind)
-                  return { ...obj, ingredient: ev.target.value };
+                  return { ...obj, ingredient_name: ev.target.value };
                 return obj;
               },
             ),
@@ -65,14 +65,18 @@ const InputIngredient = ({ formik, ind, addField }: IIngredient) => {
                 },
               ),
             );
+            console.log('unit', formik.values.ingredients);
           }}
           value={formik.values.ingredients[ind].unit}
         >
-          <option value="kg">kg</option>
+          <option selected value="kg">
+            kg
+          </option>
           <option value="g">g</option>
           <option value="ml">ml</option>
           <option value="glass">glass</option>
           <option value="spoon">spoon</option>
+          <option value="unit">unit</option>
         </select>
       </div>
       {ind === 0 ? (

@@ -1,10 +1,11 @@
 import { IRecipe, IRecipeSmall, IResponseRecipesArr } from '@/utils/typesAPI';
 import axios from 'axios';
 import URL from './base_url';
+import { successNotify } from '@/utils/toaster';
 
 const instance = axios.create({
   baseURL: URL + 'recipes/',
-  timeout: 2000,
+
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -16,6 +17,7 @@ export const addRecipeAPI = async (formData: FormData, accessToken: string) => {
         'Content-Type': 'multipart/form-data',
       },
     });
+    successNotify(response.data.Message);
     return response.data;
   } catch (error) {
     return error.response.data;
@@ -51,7 +53,7 @@ export const getRecipesByChefAPI = async (
   limit: number,
 ) => {
   try {
-    const response = await instance.get(`by-chef/${slug}`, {
+    const response = await instance.get(`by-chef/${slug}/`, {
       headers: { Authorization: 'Bearer ' + accessToken },
       // params: {
       //   page: page,
@@ -67,7 +69,7 @@ export const getRecipesByChefAPI = async (
 
 export const getRecipeBySlugAPI = async (accessToken: string, slug: string) => {
   try {
-    const response = await instance.get(`/recipes/detail/:${slug}/`, {
+    const response = await instance.get(`/detail/${slug}/`, {
       headers: { Authorization: 'Bearer ' + accessToken },
     });
     const recipe: IRecipe = response.data;

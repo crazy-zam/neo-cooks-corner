@@ -23,15 +23,9 @@ export const getProfileAPI = async (accessToken: string) => {
 
 export const updateProfileAPI = async (
   accessToken: string,
-  username: string,
-  bio: string,
-  picture: File,
+  formData: FormData,
 ) => {
   try {
-    const formData = new FormData();
-    formData.append('username', username);
-    formData.append('bio', bio);
-    formData.append('picture', picture, picture.name);
     const response = await instance.put(`myprofile/`, formData, {
       headers: {
         Authorization: 'Bearer ' + accessToken,
@@ -58,9 +52,13 @@ export const getChefBySlugAPI = async (accessToken: string, slug: string) => {
 
 export const followChefAPI = async (accessToken: string, slug: string) => {
   try {
-    const response = await instance.put(`follow/${slug}/`, {
-      headers: { Authorization: 'Bearer ' + accessToken },
-    });
+    const response = await instance.put(
+      `follow/${slug}/`,
+      {},
+      {
+        headers: { Authorization: 'Bearer ' + accessToken },
+      },
+    );
     return response.data;
   } catch (error) {
     throw error.response.data;

@@ -27,12 +27,7 @@ class searchStore {
     this.getResults(this.searchString);
   };
   getResults = async (search: string) => {
-    if (isTokenExpired(userStore.refreshToken)) {
-      userStore.logout();
-    }
-    if (isTokenExpired(userStore.accessToken)) {
-      userStore.refreshTokens(userStore.refreshToken);
-    }
+    await userStore.checkTokens();
     this.isLoading = true;
     this.searchString = search;
     const response =

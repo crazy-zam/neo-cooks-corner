@@ -1,9 +1,9 @@
 import { IRecipeSmall } from '@/utils/typesAPI';
 import { makeAutoObservable, runInAction } from 'mobx';
 import { getRecipesByChefAPI } from '@/api/recipesApi';
-import { getChefBySlugAPI } from '@/api/profileAPI';
+import { getChefBySlugAPI, followChefAPI } from '@/api/profileAPI';
 import userStore from './userStore';
-import { isTokenExpired } from '@/utils/utils';
+import { errorNotify, successNotify } from '@/utils/toaster';
 
 export default class chefStore {
   isLoading = false;
@@ -23,23 +23,19 @@ export default class chefStore {
     makeAutoObservable(this);
   }
   getChef = async (slug: string) => {
-    if (isTokenExpired(userStore.refreshToken)) {
-      userStore.logout();
-    }
-    if (isTokenExpired(userStore.accessToken)) {
-      userStore.refreshTokens(userStore.refreshToken);
-    }
+    await userStore.checkTokens();
     this.isLoading = true;
     const chef = await getChefBySlugAPI(userStore.accessToken, slug);
     runInAction(() => {
       this.slug = slug;
       this.username = chef.username;
       this.bio = chef.bio;
-      this.photo = chef.photo;
+      this.photo = chef.profile_picture;
       this.recipes = chef.recipes;
       this.followers = chef.followers;
-      this.follow = chef.follow;
-      this.isFollow = chef.isFollow;
+      this.follow = chef.following;
+      this.isFollow = chef.is_followed;
+      this.getRecipes();
       this.isLoading = false;
     });
   };
@@ -59,6 +55,13 @@ export default class chefStore {
       this.totalRecipes = response.total;
     });
   };
+  followChefAction = () => async () => {
+    try {
+      const response = await followChefAPI(userStore.accessToken, this.slug);
+      successNotify(response.Message);
+      this.isFollow = !this.isFollow;
+    } catch (error) {
+      errorNotify(error.response.data.Message);
+    }
+  };
 }
-
-// export default new recipeStore();

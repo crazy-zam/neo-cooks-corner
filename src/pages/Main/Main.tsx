@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Grid from '../../components/Grid/Grid';
 import styles from './main.module.less';
 import userStore from '@/store/userStore';
@@ -7,13 +7,15 @@ import mainStore from '@/store/mainStore';
 
 import Loader from '@/UI/Loader/Loader';
 import PageBtnGroup from '@/UI/PageBtnGroup/PageBtnGroup';
+import useWindowSize from '@/hooks/useWindowSize';
+import useColumnsGrid from '@/hooks/useGridColumnsRecipes';
 
 const Main = observer(() => {
   useEffect(() => {
     mainStore.getRecipesAction();
   }, []);
-
-  const addBtn = (category: 'breakfast' | 'lunch' | 'dinner') => {
+  const columns = useColumnsGrid(mainStore.limit, 280);
+  const addBtn = (category: 'Breakfast' | 'Lunch' | 'Dinner') => {
     return (
       <button
         className={
@@ -25,7 +27,7 @@ const Main = observer(() => {
           mainStore.setCategory(category);
         }}
       >
-        {category.charAt(0).toUpperCase() + category.slice(1)}
+        {category}
       </button>
     );
   };
@@ -41,9 +43,9 @@ const Main = observer(() => {
 
       <div className={styles.title}>Category</div>
       <div className={styles.navigateGroup}>
-        {addBtn('breakfast')}
-        {addBtn('lunch')}
-        {addBtn('dinner')}
+        {addBtn('Breakfast')}
+        {addBtn('Lunch')}
+        {addBtn('Dinner')}
       </div>
       <div className={styles.grid}>
         {mainStore.isLoading ? (
@@ -54,7 +56,7 @@ const Main = observer(() => {
               <div className={styles.noResults}>No results</div>
             ) : (
               <>
-                <Grid array={mainStore.recipes}></Grid>
+                <Grid array={mainStore.recipes} columns={columns}></Grid>
                 <PageBtnGroup store={mainStore} />
               </>
             )}

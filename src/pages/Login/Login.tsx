@@ -39,9 +39,15 @@ const Login = observer(() => {
       </div>
       <FormLogin></FormLogin>
       <div className={styles.footer}>
-        You don't have an account?{' '}
+        {"You don't have an account? "}
         <Link to="/auth/registration" className={styles.link}>
           Sign Up Now
+        </Link>
+      </div>
+      <div className={styles.footer}>
+        {'Forgot your password? '}
+        <Link to="/auth/forgot" className={styles.link}>
+          Press here
         </Link>
       </div>
     </div>

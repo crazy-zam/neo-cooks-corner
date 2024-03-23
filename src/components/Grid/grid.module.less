@@ -1,15 +1,32 @@
-.gridWrapper4 {
+.grid-mixin {
   width: 100%;
   margin-bottom: 32px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
   gap: 24px;
 }
 
+.gridWrapper1 {
+  .grid-mixin;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.gridWrapper2 {
+  .grid-mixin;
+  grid-template-columns: repeat(2, 1fr);
+}
+.gridWrapper3 {
+  .grid-mixin;
+  grid-template-columns: repeat(3, 1fr);
+}
+.gridWrapper4 {
+  .grid-mixin;
+  grid-template-columns: repeat(4, 1fr);
+}
+.gridWrapper5 {
+  .grid-mixin;
+  grid-template-columns: repeat(5, 1fr);
+}
 .gridWrapper6 {
-  width: 100%;
-  margin-bottom: 32px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
+  .grid-mixin;
+  grid-template-columns: repeat(6, 1fr);
 }

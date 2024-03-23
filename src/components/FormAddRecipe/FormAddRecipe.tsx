@@ -3,15 +3,18 @@ import styles from './formAddRecipe.module.less';
 import { Camera } from '@/assets';
 import InputIngredient from '@/UI/InputIngredient/InputIngredient';
 import { useEffect, useState } from 'react';
-import Loader from '@/UI/Loader/Loader';
-import { object } from 'yup';
 import LoaderSmall from '@/UI/LoaderSmall/LoaderSmall';
 import { addRecipeAPI } from '@/api/recipesApi';
 import userStore from '@/store/userStore';
 
-const FormAddRecipe = () => {
+interface IModal {
+  closeModal: () => void;
+}
+
+const FormAddRecipe = ({ closeModal }: IModal) => {
+  const [isLoading, setIsLoading] = useState(false);
   const ingredientObj = {
-    ingredient: '',
+    ingredient_name: '',
     amount: '',
     unit: '',
   };
@@ -21,12 +24,12 @@ const FormAddRecipe = () => {
       name: '',
       description: '',
       file: '',
-      difficulty: 'easy',
-      category: 'breakfast',
+      difficulty: 'Easy',
+      category: 'Breakfast',
       time: '',
       ingredients: [ingredientObj],
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const formData = new FormData();
       formData.append('name', values.name);
       formData.append('description', values.description);
@@ -35,8 +38,10 @@ const FormAddRecipe = () => {
       formData.append('preparation_time', values.time);
       formData.append('category', values.category);
       formData.append('meal_picture', image, image.name);
-      console.log(values);
-      addRecipeAPI(formData, userStore.accessToken);
+      setIsLoading(true);
+      await addRecipeAPI(formData, userStore.accessToken);
+      setIsLoading(false);
+      closeModal();
     },
   });
   const [btnDisabled, setBtnDisabled] = useState(true);
@@ -44,7 +49,9 @@ const FormAddRecipe = () => {
     setBtnDisabled(
       Object.values(formik.values).reduce((acc, field) => {
         if (typeof field === 'object') {
-          return acc || field[0]?.ingredient === '' || field[0]?.amount === '';
+          return (
+            acc || field[0]?.ingredient_name === '' || field[0]?.amount === ''
+          );
         }
         return acc || field === '';
       }, false),
@@ -63,7 +70,7 @@ const FormAddRecipe = () => {
           formik.setFieldValue('difficulty', difficulty);
         }}
       >
-        {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+        {difficulty}
       </button>
     );
   };
@@ -132,9 +139,9 @@ const FormAddRecipe = () => {
             Difficulty
           </label>
           <div className={styles.difficultBtnGroup}>
-            {difficultyBtn('easy')}
-            {difficultyBtn('medium')}
-            {difficultyBtn('hard')}
+            {difficultyBtn('Easy')}
+            {difficultyBtn('Medium')}
+            {difficultyBtn('Hard')}
           </div>
         </div>
         <div className={styles.categoryContainer}>
@@ -142,9 +149,11 @@ const FormAddRecipe = () => {
             Category of meal
           </label>
           <select name="category" id="category" className={styles.selectGrey}>
-            <option value="breakfast">Breakfast</option>
-            <option value="lunch">Lunch</option>
-            <option value="dinner">Dinner</option>
+            <option selected value="Breakfast">
+              Breakfast
+            </option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
           </select>
         </div>
         <div className={styles.timeContainer}>
@@ -208,8 +217,7 @@ const FormAddRecipe = () => {
         className={styles.buttonSubmit}
         disabled={btnDisabled}
       >
-        {/* <LoaderSmall />  */}
-        Save changes
+        {isLoading ? <LoaderSmall /> : 'Save changes'}
       </button>
     </form>
   );

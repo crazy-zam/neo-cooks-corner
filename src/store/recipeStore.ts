@@ -32,12 +32,7 @@ export default class recipeStore {
     makeAutoObservable(this);
   }
   getRecipe = async (slug: string) => {
-    if (isTokenExpired(userStore.refreshToken)) {
-      userStore.logout();
-    }
-    if (isTokenExpired(userStore.accessToken)) {
-      userStore.refreshTokens(userStore.refreshToken);
-    }
+    await userStore.checkTokens();
     this.isLoading = true;
     const recipe = await getRecipeBySlugAPI(userStore.accessToken, slug);
     runInAction(() => {
@@ -49,9 +44,9 @@ export default class recipeStore {
       this.time = recipe.preparation_time;
       this.complexity = recipe.difficulty;
       this.likes = recipe.likes;
-      this.isLiked = recipe.isLiked;
+      this.isLiked = recipe.is_liked;
       this.saves = recipe.saves;
-      this.isSaved = recipe.isSaved;
+      this.isSaved = recipe.is_saved;
       this.description = recipe.description;
       this.ingredients = recipe.ingredients;
       this.isLoading = false;
@@ -59,6 +54,7 @@ export default class recipeStore {
   };
   likeRecipeAction = async () => {
     if (this.likesFetching) return;
+    await userStore.checkTokens();
     this.likesTouched = true;
     this.likesFetching = true;
     this.isLiked = !this.isLiked;
@@ -69,12 +65,12 @@ export default class recipeStore {
       !this.isLiked,
     );
     runInAction(() => {
-      // this.isLiked = response;
       this.likesFetching = false;
     });
   };
   saveRecipeAction = async () => {
     if (this.savesFetching) return;
+    await userStore.checkTokens();
     this.savesTouched = true;
     this.savesFetching = true;
     this.isSaved = !this.isSaved;
@@ -84,7 +80,6 @@ export default class recipeStore {
       !this.isSaved,
     );
     runInAction(() => {
-      // this.isSaved = response;
       this.savesFetching = false;
     });
   };

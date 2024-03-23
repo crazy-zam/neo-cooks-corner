@@ -13,7 +13,7 @@ const DishDetailed = observer(() => {
   useEffect(() => {
     recipe.getRecipe(slug);
   }, [slug]);
-
+  console.log(slug);
   return (
     <div className={styles.wrapper}>
       {recipe.isLoading ? (
@@ -26,7 +26,10 @@ const DishDetailed = observer(() => {
           <img src={recipe.image} alt="" className={styles.img} />
           <div className={styles.descriptionContainer}>
             <div className={styles.title}>{recipe.title}</div>
-            <Link to={`/chef-details/${recipe.slug}`} className={styles.author}>
+            <Link
+              to={`/chef-details/${recipe.authorSlug}`}
+              className={styles.author}
+            >
               by {recipe.author}
             </Link>
             <div className={styles.time}>

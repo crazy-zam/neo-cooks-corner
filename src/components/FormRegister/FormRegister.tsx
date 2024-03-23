@@ -9,9 +9,11 @@ import {
   confirmPasswordSchema,
 } from '@/utils/validation/schemes';
 import { errorNotify } from '@/utils/toaster';
-import { registerUserAPI } from '@/api/userApi';
+import userStore from '@/store/userStore';
+import LoaderSmall from '@/UI/LoaderSmall/LoaderSmall';
+import { observer } from 'mobx-react-lite';
 
-const FormRegister = () => {
+const FormRegister = observer(() => {
   const schema = usernameSchema
     .concat(emailSchema)
     .concat(passwordSchema)
@@ -28,15 +30,15 @@ const FormRegister = () => {
       schema
         .validate(
           {
-            name: formik.values.name,
-            email: formik.values.email,
-            password: formik.values.password,
-            confirmPassword: formik.values.confirmPassword,
+            name: name,
+            email: email,
+            password: password,
+            confirmPassword: confirmPassword,
           },
           { abortEarly: false },
         )
         .then(() => {
-          registerUserAPI(name, password, email);
+          userStore.register(name, email, password);
         })
         .catch((e) => {
           const errors = new Set(e.errors);
@@ -135,11 +137,11 @@ const FormRegister = () => {
           </button>
         </div>
         <button className={styles.button} type="submit" disabled={btnDisabled}>
-          Sign in
+          {userStore.isLoading ? <LoaderSmall /> : 'Sign in'}
         </button>
       </form>
     </div>
   );
-};
+});
 
 export default FormRegister;

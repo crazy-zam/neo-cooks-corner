@@ -1,9 +1,11 @@
 import { getSavedRecipesAPI, getRecipesByChefAPI } from '@/api/recipesApi';
-import { userLoginAPI, refreshTokenAPI } from '@/api/userApi';
+import { userLoginAPI, refreshTokenAPI, registerUserAPI } from '@/api/userApi';
+import { updateProfileAPI } from '@/api/profileAPI';
 import { getProfileAPI } from '@/api/profileAPI';
 import { IRecipeSmall } from '@/utils/typesAPI';
 import { makeAutoObservable, runInAction } from 'mobx';
 import { isTokenExpired } from '@/utils/utils';
+import { errorNotify, successNotify } from '@/utils/toaster';
 
 class userStore {
   isAuth = false;
@@ -24,40 +26,83 @@ class userStore {
   limit: number = 12;
   recipesArrCategory: 'my' | 'saved' = 'my';
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {}, { autoBind: true });
   }
   setTokens = (accessToken: string, refreshToken: string) => {
-    this.accessToken = accessToken;
-    this.refreshToken = refreshToken;
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    runInAction(() => {
+      this.accessToken = accessToken;
+      this.refreshToken = refreshToken;
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+    });
+    console.log('access after refreshAction', this.accessToken);
   };
   login = async (email: string, password: string) => {
     try {
+      this.isLoading = true;
       const response = await userLoginAPI(email, password);
-      this.isAuth = true;
-      this.setTokens(response.access, response.refresh);
-
-      this.getUser();
+      console.log('login', response);
+      runInAction(() => {
+        this.isAuth = true;
+        this.setTokens(response.access, response.refresh);
+        this.getUser();
+      });
     } catch (error) {
       throw error;
+    } finally {
+      this.isLoading = false;
+    }
+  };
+
+  register = async (username: string, email: string, password: string) => {
+    try {
+      this.isLoading = true;
+      const response = await registerUserAPI(username, password, email);
+      runInAction(() => {
+        this.isAuth = true;
+        this.setTokens(response.access, response.refresh);
+        this.getUser();
+      });
+    } catch (error) {
+      throw error;
+    } finally {
+      this.isLoading = false;
     }
   };
   refreshTokens = async (refreshToken: string) => {
-    const response = await refreshTokenAPI(refreshToken);
-    this.setTokens(response.accessToken, response.refreshToken);
+    try {
+      console.log('refresh tokens');
+      const response = await refreshTokenAPI(refreshToken);
+      console.log('access after refreshFetch', response.access);
+      runInAction(() => {
+        this.setTokens(response.access, response.refresh);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  checkTokens = async () => {
+    if (isTokenExpired(this.refreshToken)) {
+      this.logout();
+      return;
+    }
+    if (isTokenExpired(this.accessToken)) {
+      await this.refreshTokens(this.refreshToken);
+    }
   };
   getUser = async () => {
     this.isLoading = true;
     try {
       const response = await getProfileAPI(this.accessToken);
+      console.log('getuser', response);
       this.username = response.username;
       this.bio = response.bio;
-      this.photo = response.photo;
+      this.photo = response.profile_picture;
       this.recipes = response.recipes;
       this.followers = response.followers;
-      this.follow = response.follow;
+      this.follow = response.following;
       this.slug = response.slug;
+      this.isVerified = response.isVerified;
     } catch (error) {
       this.isAuth = false;
       throw error;
@@ -77,26 +122,28 @@ class userStore {
     this.followers = 0;
     this.follow = 0;
   };
+
   getRecipesAction = async () => {
-    if (isTokenExpired(this.refreshToken)) {
-      this.logout();
+    this.checkTokens();
+    try {
+      console.log(this.accessToken);
+      this.isLoading = true;
+      const response =
+        this.recipesArrCategory === 'my'
+          ? await getRecipesByChefAPI(
+              this.accessToken,
+              this.slug,
+              this.page,
+              this.limit,
+            )
+          : await getSavedRecipesAPI(this.accessToken, this.page, this.limit);
+      this.recipesArr = response.data;
+      this.totalRecipes = response.total;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.isLoading = false;
     }
-    if (isTokenExpired(this.accessToken)) {
-      this.refreshTokens(this.refreshToken);
-    }
-    this.isLoading = true;
-    const response =
-      this.recipesArrCategory === 'my'
-        ? await getRecipesByChefAPI(
-            this.accessToken,
-            this.slug,
-            this.page,
-            this.limit,
-          )
-        : await getSavedRecipesAPI(this.accessToken, this.page, this.limit);
-    this.recipesArr = response.data;
-    this.totalRecipes = response.total;
-    this.isLoading = false;
   };
   setPage = (page: number) => {
     this.page = page;
@@ -105,6 +152,19 @@ class userStore {
   setCategory = (category: 'my' | 'saved') => {
     this.recipesArrCategory = category;
     this.getRecipesAction();
+  };
+  changeProfile = async (formData: FormData) => {
+    try {
+      this.isLoading = true;
+      const response = await updateProfileAPI(this.accessToken, formData);
+      successNotify(response.Message);
+      this.getUser();
+    } catch (error) {
+      console.log(error);
+      errorNotify(error.response.data.Message);
+    } finally {
+      this.isLoading = false;
+    }
   };
 }
 

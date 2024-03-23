@@ -1,12 +1,13 @@
 export interface IUser {
-  slug?: string;
+  slug: string;
   username: string;
   bio: string;
-  photo: string;
+  profile_picture: string;
   recipes: number;
   followers: number;
-  follow: number;
-  isFollow?: boolean;
+  following: number;
+  is_followed?: boolean;
+  isVerified?: boolean;
 }
 
 export interface ITokens {
@@ -16,8 +17,8 @@ export interface ITokens {
 
 export interface IChef {
   slug: string;
-  author_name: string;
-  author_photo: string;
+  username: string;
+  profile_picture: string;
 }
 
 export interface IRecipe {
@@ -29,9 +30,9 @@ export interface IRecipe {
   preparation_time: number;
   difficulty: string;
   likes: number;
-  isLiked: boolean;
+  is_liked: boolean;
   saves: number;
-  isSaved: boolean;
+  is_saved: boolean;
   description: string;
   ingredients: Array<IIngredient>;
 }
@@ -43,13 +44,13 @@ export interface IIngredient {
 
 export interface IRecipeSmall {
   slug: string;
-  title: string;
+  name: string;
   author_name: string;
   meal_picture: string;
   likes: number;
-  isLiked: boolean;
+  is_liked: boolean;
   saves: number;
-  isSaved: boolean;
+  is_saved: boolean;
 }
 export interface IResponseRecipesArr {
   data: Array<IRecipeSmall>;

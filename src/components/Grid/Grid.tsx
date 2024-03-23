@@ -6,27 +6,37 @@ import { string } from 'yup';
 
 interface IGridParams {
   array: IRecipeSmall[] | IChef[];
+  columns: number;
   type?: 'chefs' | 'recipes';
 }
+const stylesObj = {
+  1: styles.gridWrapper1,
+  2: styles.gridWrapper2,
+  3: styles.gridWrapper3,
+  4: styles.gridWrapper4,
+  5: styles.gridWrapper5,
+  6: styles.gridWrapper6,
+};
+type ObjKey = keyof typeof stylesObj;
 
-const Grid = ({ array, type = 'recipes' }: IGridParams) => {
+const Grid = ({ array, type = 'recipes', columns }: IGridParams) => {
+  const key = columns as ObjKey;
+
   return (
-    <div
-      className={type === 'recipes' ? styles.gridWrapper4 : styles.gridWrapper6}
-    >
+    <div className={stylesObj[key]}>
       {array.map((card) => {
-        if ('title' in card) {
+        if ('name' in card) {
           return (
             <DishCard
               key={card.slug}
               slug={card.slug}
-              title={card.title}
+              title={card.name}
               author={card.author_name}
               image={card.meal_picture}
               likes={card.likes}
               saves={card.saves}
-              isLiked={card.isLiked}
-              isSaved={card.isSaved}
+              isLiked={card.is_liked}
+              isSaved={card.is_saved}
             />
           );
         } else {
@@ -34,8 +44,8 @@ const Grid = ({ array, type = 'recipes' }: IGridParams) => {
             <ChefCard
               key={card.slug}
               slug={card.slug}
-              fullName={card.author_name}
-              image={card.author_photo}
+              fullName={card.username}
+              image={card.profile_picture}
             />
           );
         }
