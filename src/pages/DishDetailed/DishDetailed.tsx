@@ -6,10 +6,18 @@ import recipeStore from '@/store/recipeStore';
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import Loader from '@/UI/Loader/Loader';
+import userStore from '@/store/userStore';
 const recipe = new recipeStore();
 const DishDetailed = observer(() => {
   const { slug } = useParams();
-
+  const likeHandler = () => {
+    if (!userStore.isVerified) return;
+    recipe.likeRecipeAction();
+  };
+  const saveHandler = () => {
+    if (!userStore.isVerified) return;
+    recipe.saveRecipeAction();
+  };
   useEffect(() => {
     recipe.getRecipe(slug);
   }, [slug]);
@@ -46,7 +54,7 @@ const DishDetailed = observer(() => {
                     ? styles.likeIcon
                     : styles.likedIcon
                 }
-                onClick={() => recipe.likeRecipeAction()}
+                onClick={likeHandler}
               />
               <div className={styles.likes}>{recipe.likes} Likes</div>
 
@@ -58,7 +66,7 @@ const DishDetailed = observer(() => {
                     ? styles.saveIcon
                     : styles.savedIcon
                 }
-                onClick={() => recipe.saveRecipeAction()}
+                onClick={saveHandler}
               />
             </div>
             <div className={styles.header}>Description</div>

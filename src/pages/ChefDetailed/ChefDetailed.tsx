@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import useColumnsGrid from '@/hooks/useGridColumnsRecipes';
+import userStore from '@/store/userStore';
 const chef = new chefStore();
 const ChefDetailed = observer(() => {
   const { slug } = useParams();
@@ -31,7 +32,11 @@ const ChefDetailed = observer(() => {
         bio={chef.bio}
         myProfile={false}
       />
-      <button className={styles.followBtn} onClick={chef.followChefAction()}>
+      <button
+        className={styles.followBtn}
+        onClick={chef.followChefAction()}
+        disabled={!userStore.isVerified}
+      >
         {chef.isFollow ? 'Unfollow' : 'Follow'}
       </button>
       <div className={styles.grid}>

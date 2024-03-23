@@ -61,12 +61,14 @@ const MyProfile = observer(() => {
           <button
             className={styles.buttonProfile}
             onClick={toggleProfileModal(true)}
+            disabled={!userStore.isVerified}
           >
             Manage Profile
           </button>
           <button
             className={styles.buttonProfile}
             onClick={togglePasswordModal(true)}
+            disabled={!userStore.isVerified}
           >
             Change password
           </button>

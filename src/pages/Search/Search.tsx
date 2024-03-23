@@ -10,6 +10,7 @@ import Loader from '@/UI/Loader/Loader';
 import PageBtnGroup from '@/UI/PageBtnGroup/PageBtnGroup';
 import { useDebounce } from '@/hooks/useDebounce';
 import useColumnsGrid from '@/hooks/useGridColumnsRecipes';
+import userStore from '@/store/userStore';
 
 const Search = observer(() => {
   const [search, setSearch] = useState('');
@@ -97,7 +98,11 @@ const Search = observer(() => {
         )}
       </div>
 
-      <button className={styles.addBtn} onClick={openModal}>
+      <button
+        className={styles.addBtn}
+        onClick={openModal}
+        disabled={!userStore.isVerified}
+      >
         <AddBtn className={styles.addBtnIcon} />
         Add your recipe
       </button>
